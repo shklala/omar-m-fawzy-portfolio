@@ -1,5 +1,5 @@
 /* =========================================================================
-   Omar M. Fawzy — Portfolio
+   Omar M. Fawzy Portfolio
    Vanilla JS, no dependencies.
 
    Sections:
@@ -13,6 +13,7 @@
      8.  Notifications
      9.  Gamification (XP, coins, streak)
      10. Ambient effects (starfield, skill stars, cursor trail, matrix rain)
+     11. Motion and interaction (scroll-spy, counters, spotlight, tilt, timeline)
    ========================================================================= */
 
 (function () {
@@ -118,6 +119,10 @@
 
     let scrollQueued = false;
 
+    // Anything else that needs the scroll position registers here rather than
+    // adding its own listener, so the whole page still costs one frame.
+    const scrollFrameHooks = [];
+
     function onScrollFrame() {
         scrollQueued = false;
         const y = window.pageYOffset || document.documentElement.scrollTop || 0;
@@ -138,6 +143,8 @@
         if (hero && allowParallax && !reduceMotion) {
             hero.style.transform = 'translate3d(0,' + (y * -0.25) + 'px,0)';
         }
+
+        for (let i = 0; i < scrollFrameHooks.length; i++) scrollFrameHooks[i](y);
     }
 
     function requestScrollFrame() {
@@ -189,7 +196,7 @@
     const scrollTypeTargets = $$('[data-type-on-scroll]');
 
     if (reduceMotion) {
-        // Nothing to hide — leave the text exactly as authored.
+        // Nothing to hide, so leave the text exactly as authored.
         scrollTypeTargets.forEach((el) => { el.dataset.typed = '1'; });
     } else {
         scrollTypeTargets.forEach((el) => {
@@ -298,7 +305,7 @@
         const withEffects = !reduceMotion;
 
         // If the visitor prefers reduced motion, don't make them sit through an
-        // intro at all — drop them straight into the content.
+        // intro at all, so drop them straight into the content.
         if (reduceMotion) {
             beginExperience(false);
         } else {
@@ -680,8 +687,178 @@
         })(performance.now());
     }
 
+
     /* ---------------------------------------------------------------------
-       Footer year — one less thing to go stale.
+       11. Motion and interaction
+       Scroll-spy, counters, pointer-reactive cards and the timeline progress
+       line. All of it checks reduceMotion first, and the pointer effects are
+       skipped entirely on touch devices where there is no hover to react to.
+       ------------------------------------------------------------------ */
+
+    // Stagger index for grid reveals, consumed by --i in the stylesheet.
+    ['.projects-grid', '.skills-grid', '.about-stats', '.badge-list'].forEach((sel) => {
+        const parent = $(sel);
+        if (!parent) return;
+        Array.from(parent.children).forEach((child, i) => {
+            child.style.setProperty('--i', String(i));
+        });
+    });
+
+    // --- Section titles: grow the underline when the title arrives ---------
+    const titleObserver = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('in-view');
+            titleObserver.unobserve(e.target);
+        });
+    }, { threshold: 0.6 });
+
+    $$('.section-title').forEach((t) => titleObserver.observe(t));
+
+    // --- Scroll-spy navigation ---------------------------------------------
+    const navLinks = $$('.nav-link');
+    const sections = navLinks
+        .map((link) => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+
+    function updateActiveNav() {
+        if (!sections.length) return;
+        // The section whose top is closest to just under the fixed navbar.
+        const probe = window.scrollY + 120;
+        let activeIndex = 0;
+        sections.forEach((sec, i) => {
+            if (sec.offsetTop <= probe) activeIndex = i;
+        });
+        // At the very bottom the last section may never reach the probe line.
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 4) {
+            activeIndex = sections.length - 1;
+        }
+        navLinks.forEach((link, i) => link.classList.toggle('active', i === activeIndex));
+    }
+
+    // --- Timeline progress line --------------------------------------------
+    const timeline = $('.timeline');
+    const timelineItems = $$('.timeline-item');
+
+    function updateTimeline() {
+        if (!timeline) return;
+        const rect = timeline.getBoundingClientRect();
+        const mid = window.innerHeight * 0.55;
+        const progress = (mid - rect.top) / rect.height;
+        timeline.style.setProperty('--timeline-progress',
+            Math.max(0, Math.min(1, progress)) * 100 + '%');
+
+        // Mark the entry nearest the middle of the viewport.
+        let nearest = null;
+        let best = Infinity;
+        timelineItems.forEach((item) => {
+            const r = item.getBoundingClientRect();
+            const d = Math.abs(r.top + r.height / 2 - window.innerHeight / 2);
+            if (d < best) { best = d; nearest = item; }
+        });
+        timelineItems.forEach((item) => item.classList.toggle('current', item === nearest));
+    }
+
+    // Both run inside the existing rAF-batched scroll frame.
+    scrollFrameHooks.push(updateActiveNav);
+    if (timeline && !reduceMotion) scrollFrameHooks.push(updateTimeline);
+    updateActiveNav();
+    updateTimeline();
+
+    // --- Count-up statistics ------------------------------------------------
+    // Reads the number out of the existing text, so the markup stays readable
+    // and a value like "C1" is simply left alone.
+    const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            const el = e.target;
+            statObserver.unobserve(el);
+
+            const text = el.textContent.trim();
+            const match = text.match(/^(\D*)(\d+)(.*)$/);
+            if (!match || reduceMotion) return;
+
+            const [, prefix, digits, suffix] = match;
+            const target = parseInt(digits, 10);
+            if (!target || target > 10000) return;
+
+            const duration = 1100;
+            const start = performance.now();
+            const step = (now) => {
+                const t = Math.min(1, (now - start) / duration);
+                // easeOutCubic
+                const eased = 1 - Math.pow(1 - t, 3);
+                el.textContent = prefix + Math.round(target * eased) + suffix;
+                if (t < 1) requestAnimationFrame(step);
+                else el.textContent = text;
+            };
+            el.textContent = prefix + '0' + suffix;
+            requestAnimationFrame(step);
+        });
+    }, { threshold: 0.6 });
+
+    $$('.stat h3').forEach((el) => statObserver.observe(el));
+
+    // --- XP bar fills on arrival -------------------------------------------
+    if (xpFill) {
+        const finalWidth = xpFill.style.width;
+        if (!reduceMotion) {
+            xpFill.style.width = '0%';
+            setTimeout(() => { xpFill.style.width = finalWidth; }, 700);
+        }
+    }
+
+    // --- Pointer spotlight and tilt ----------------------------------------
+    if (!coarsePointer && !reduceMotion) {
+        const spotlightTargets = $$('.project-card, .skill-category, .timeline-content, .stat, .education-item');
+        spotlightTargets.forEach((el) => el.classList.add('spotlight'));
+
+        let pointerQueued = false;
+        let pending = null;
+
+        const applyPointer = () => {
+            pointerQueued = false;
+            if (!pending) return;
+            const { el, x, y, tilt } = pending;
+            const r = el.getBoundingClientRect();
+            const px = ((x - r.left) / r.width) * 100;
+            const py = ((y - r.top) / r.height) * 100;
+            el.style.setProperty('--mx', px + '%');
+            el.style.setProperty('--my', py + '%');
+            if (tilt) {
+                // Small angles only: enough to read as depth, not as a gimmick.
+                el.style.setProperty('--ry', ((px - 50) / 50 * 5).toFixed(2) + 'deg');
+                el.style.setProperty('--rx', (-(py - 50) / 50 * 5).toFixed(2) + 'deg');
+            }
+            pending = null;
+        };
+
+        const track = (el, tilt) => {
+            el.addEventListener('pointermove', (e) => {
+                pending = { el, x: e.clientX, y: e.clientY, tilt };
+                if (!pointerQueued) {
+                    pointerQueued = true;
+                    requestAnimationFrame(applyPointer);
+                }
+            }, { passive: true });
+
+            el.addEventListener('pointerleave', () => {
+                pending = null;
+                if (tilt) {
+                    el.style.setProperty('--rx', '0deg');
+                    el.style.setProperty('--ry', '0deg');
+                }
+            });
+        };
+
+        spotlightTargets.forEach((el) => track(el, el.classList.contains('project-card')));
+
+        const profileCard = $('.profile-card');
+        if (profileCard) track(profileCard, true);
+    }
+
+    /* ---------------------------------------------------------------------
+       Footer year, one less thing to go stale.
        ------------------------------------------------------------------ */
     const footerYear = $('#footerYear');
     if (footerYear) footerYear.textContent = String(new Date().getFullYear());

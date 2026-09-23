@@ -1,25 +1,25 @@
-# Omar M. Fawzy — Portfolio
+# Omar M. Fawzy Portfolio
 
 Personal portfolio site. **Live:** <https://shklala.github.io/omar-m-fawzy-portfolio/>
 
 Education Mentor & Product Specialist at iSchool New Cairo, and IT & Systems Administrator /
 Help Desk Lead / Software Control Specialist at Holol PMS UAE.
 
-No build step, no framework, no dependencies — three files and a folder of assets, served
+No build step, no framework, no dependencies. Three files and a folder of assets, served
 straight from GitHub Pages.
 
 ## Features
 
-- **Retro-arcade layer** — start screen, XP/level HUD, coins & streaks, matrix-rain transition,
+- **Retro-arcade layer**: start screen, XP/level HUD, coins & streaks, matrix-rain transition,
   canvas starfield, typewriter reveals
-- **Responsive** — single-column from 768px down, no horizontal scroll
-- **Accessible** — skip link, visible focus rings, labelled controls, keyboard-operable start
+- **Responsive**: single-column from 768px down, no horizontal scroll
+- **Accessible**: skip link, visible focus rings, labelled controls, keyboard-operable start
   screen, pinch-zoom enabled, full `prefers-reduced-motion` support (the intro is skipped
   entirely and all ambient animation is disabled)
-- **Fast** — WebP profile image with JPEG fallback (14 KB, down from a 4.9 MB PNG), non-blocking
+- **Fast**: WebP profile image with JPEG fallback (14 KB, down from a 4.9 MB PNG), non-blocking
   icon font, one rAF-throttled scroll handler instead of four listeners, ambient canvases
   disabled on small screens and hidden tabs
-- **Discoverable** — Open Graph and Twitter cards, canonical URL, `Person` JSON-LD structured
+- **Discoverable**: Open Graph and Twitter cards, canonical URL, `Person` JSON-LD structured
   data, sitemap and robots.txt
 
 ## Project structure
@@ -60,7 +60,7 @@ what GitHub Pages actually does.
 | What | Where |
 | --- | --- |
 | Experience entries | `.timeline` in `index.html` |
-| Projects | `.projects-grid` in `index.html` — placeholder cards carry inline instructions |
+| Projects | `.projects-grid` in `index.html` (placeholder cards carry inline instructions) |
 | Skills and levels | `.skills-grid`; levels are the `expert` / `advanced` / `working` classes |
 | Resume PDF | replace `assets/Omar-Mohamed-Fawzy-Resume.pdf` |
 | Colors and spacing | the `ENHANCEMENTS` block at the bottom of `styles.css` |
@@ -71,7 +71,7 @@ sizes rather than dropping in a full-resolution file.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
 
 ## Contact
 
