@@ -1194,19 +1194,6 @@ footer,
     opacity: 1;
 }
 
-/* Cursor trail */
-.cursor-dot {
-    position: fixed;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #93c5fd 0%, rgba(147, 197, 253, 0) 70%);
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    opacity: 0.9;
-    z-index: 9999;
-}
-
 .contact-info {
     display: flex;
     flex-direction: column;
@@ -2107,8 +2094,7 @@ html {
 
     .bg-stars,
     .matrix-rain,
-    .skill-stars,
-    .cursor-dot {
+    .skill-stars {
         display: none !important;
     }
 
@@ -2811,5 +2797,509 @@ html {
 
     .btn::after {
         display: none;
+    }
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR AND INTERACTION LAYER
+   ========================================================================== */
+
+/* --- Arcade reticle cursor ------------------------------------------------ */
+
+/* The class is added by JS only after the cursor element exists, so without
+   JS (or on touch, or under reduced motion) the native cursor is untouched. */
+.cursor-on,
+.cursor-on * {
+    cursor: none !important;
+}
+
+.cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    will-change: transform;
+}
+
+.cursor.ready {
+    opacity: 1;
+}
+
+.cursor.off {
+    opacity: 0;
+}
+
+.cursor-core,
+.cursor-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cursor-core {
+    width: 6px;
+    height: 6px;
+    background: #c7d2fe;
+    box-shadow: 0 0 10px rgba(165, 180, 252, 0.9);
+    transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+}
+
+.cursor-ring {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid rgba(165, 180, 252, 0.65);
+    transition: width 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+        height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        border-radius 0.25s ease;
+}
+
+/* Four reticle ticks, drawn as a conic-free pair of pseudo elements. */
+.cursor-ring::before,
+.cursor-ring::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: rgba(165, 180, 252, 0.8);
+    transform: translate(-50%, -50%);
+    transition: opacity 0.25s ease;
+}
+
+.cursor-ring::before {
+    width: 1px;
+    height: 100%;
+    height: calc(100% + 10px);
+}
+
+.cursor-ring::after {
+    width: calc(100% + 10px);
+    height: 1px;
+}
+
+/* The crosshair is the resting state; it retracts over interactive things. */
+.cursor.on-link .cursor-ring::before,
+.cursor.on-link .cursor-ring::after,
+.cursor.on-text .cursor-ring::before,
+.cursor.on-text .cursor-ring::after {
+    opacity: 0;
+}
+
+.cursor.on-link .cursor-ring {
+    width: 58px;
+    height: 58px;
+    border-color: rgba(167, 139, 250, 0.9);
+    background: rgba(124, 92, 255, 0.16);
+}
+
+.cursor.on-link .cursor-core {
+    width: 0;
+    height: 0;
+}
+
+/* Text fields get a caret shape instead of a reticle. */
+.cursor.on-text .cursor-ring {
+    width: 2px;
+    height: 28px;
+    border: none;
+    border-radius: 1px;
+    background: #a5b4fc;
+}
+
+.cursor.on-text .cursor-core {
+    width: 0;
+    height: 0;
+}
+
+.cursor.down .cursor-ring {
+    transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* Label shown for elements carrying data-cursor. */
+.cursor-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    letter-spacing: 0.5px;
+    color: #e0e7ff;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+.cursor.has-label .cursor-label {
+    opacity: 1;
+}
+
+.cursor.has-label .cursor-ring {
+    width: 74px;
+    height: 74px;
+}
+
+/* Fading particle trail, pooled rather than created per pointer move. */
+.cursor-trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(147, 197, 253, 0.85);
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+}
+
+/* --- Magnetic elements ----------------------------------------------------- */
+
+.magnetic {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.magnetic.pulling {
+    transition: transform 0.1s linear;
+}
+
+/* --- Project filters ------------------------------------------------------- */
+
+.project-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+}
+
+.filter-btn {
+    padding: 0.5rem 1.15rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    background: rgba(13, 20, 38, 0.6);
+    color: #94a3b8;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+}
+
+.filter-btn:hover {
+    color: #e2e8f0;
+    border-color: rgba(165, 180, 252, 0.6);
+    transform: translateY(-2px);
+}
+
+.filter-btn[aria-pressed="true"] {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 6px 18px rgba(102, 126, 234, 0.35);
+}
+
+.filter-count {
+    margin-left: 0.4rem;
+    opacity: 0.7;
+    font-size: 0.75em;
+}
+
+/* Filtered-out cards collapse out of the grid. */
+.project-card.filtered-out {
+    display: none;
+}
+
+.project-card.filtering-in {
+    animation: card-in 0.45s backwards cubic-bezier(0.22, 1, 0.36, 1);
+    animation-delay: calc(var(--fi, 0) * 45ms);
+}
+
+@keyframes card-in {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* --- Back to top: scroll progress ring ------------------------------------ */
+
+.back-to-top {
+    display: grid;
+    place-items: center;
+}
+
+.back-to-top svg {
+    position: absolute;
+    inset: -4px;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    transform: rotate(-90deg);
+    pointer-events: none;
+}
+
+.back-to-top svg circle {
+    fill: none;
+    stroke-width: 2.5;
+}
+
+.back-to-top .ring-track {
+    stroke: rgba(255, 255, 255, 0.16);
+}
+
+.back-to-top .ring-fill {
+    stroke: #a5b4fc;
+    stroke-linecap: round;
+    stroke-dasharray: var(--circ, 157);
+    stroke-dashoffset: var(--offset, 157);
+    transition: stroke-dashoffset 0.1s linear;
+}
+
+.back-to-top i {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Copy to clipboard ----------------------------------------------------- */
+
+.copy-btn {
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: 6px;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 0.7rem;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.copy-btn:hover {
+    color: #c7d2fe;
+    border-color: rgba(165, 180, 252, 0.6);
+    background: rgba(102, 126, 234, 0.14);
+    transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.6);
+}
+
+/* --- Navbar auto-hide ------------------------------------------------------ */
+
+.navbar {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navbar.nav-hidden {
+    transform: translateY(-105%);
+}
+
+/* --- Timeline: entries slide in from their own side ----------------------- */
+
+.timeline-item:nth-child(odd).will-reveal {
+    transform: translate3d(-36px, 18px, 0);
+}
+
+.timeline-item:nth-child(even).will-reveal {
+    transform: translate3d(36px, 18px, 0);
+}
+
+.timeline-item.will-reveal.revealed {
+    transform: none;
+}
+
+/* --- Hero fades as it scrolls away ---------------------------------------- */
+
+.hero-content,
+.hero-image {
+    will-change: opacity;
+}
+
+/* --- Konami easter egg ----------------------------------------------------- */
+
+.konami-burst {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    z-index: 9997;
+    border-radius: 2px;
+}
+
+.achievement {
+    position: fixed;
+    left: 50%;
+    top: 26%;
+    z-index: 10001;
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+    padding: 1.6rem 2.4rem;
+    border-radius: 16px;
+    background: rgba(11, 16, 32, 0.96);
+    border: 1px solid rgba(165, 180, 252, 0.5);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 60px rgba(124, 92, 255, 0.35);
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0;
+}
+
+/* An entrance keyframe rather than a class-triggered transition: a transition
+   needs its start value flushed before the class lands, which is fragile for an
+   element that is created and revealed in the same task. */
+.achievement.show {
+    animation: achievement-in 0.45s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.achievement.leaving {
+    animation: achievement-out 0.3s forwards ease;
+}
+
+@keyframes achievement-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes achievement-out {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.92);
+    }
+}
+
+.achievement-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: #fbbf24;
+    letter-spacing: 1px;
+}
+
+.achievement-body {
+    color: #e2e8f0;
+    font-size: 0.95rem;
+}
+
+.achievement-hint {
+    color: #94a3b8;
+    font-size: 0.75rem;
+}
+
+/* --- Touch and reduced motion --------------------------------------------- */
+
+@media (hover: none),
+(pointer: coarse) {
+
+    .cursor,
+    .cursor-trail {
+        display: none;
+    }
+
+    .cursor-on,
+    .cursor-on * {
+        cursor: auto !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-filters {
+        gap: 0.4rem;
+    }
+
+    .filter-btn {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.72rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .cursor,
+    .cursor-trail,
+    .konami-burst {
+        display: none !important;
+    }
+
+    .cursor-on,
+    .cursor-on * {
+        cursor: auto !important;
+    }
+
+    .magnetic {
+        transform: none !important;
+        transition: none;
+    }
+
+    .navbar.nav-hidden {
+        transform: none;
+    }
+
+    .timeline-item:nth-child(odd).will-reveal,
+    .timeline-item:nth-child(even).will-reveal {
+        transform: none;
+    }
+
+    .project-card.filtering-in {
+        animation: none;
+    }
+
+    .achievement.show {
+        animation: none;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* --- Mobile timeline corrections ------------------------------------------ */
+
+@media (max-width: 768px) {
+
+    /* width:100% plus a 30px margin pushed every entry past the right edge.
+       Only overflow-x: clip was hiding it. */
+    .timeline-content {
+        width: calc(100% - 30px);
+    }
+
+    /* The single-column layout puts the rail at a fixed left offset, so the
+       marker must not be centred on it, and the entries must not slide in
+       sideways from outside the viewport. */
+    .timeline-marker,
+    .timeline-item.revealed .timeline-marker {
+        transform: scale(1);
+    }
+
+    .timeline-item:nth-child(odd).will-reveal,
+    .timeline-item:nth-child(even).will-reveal {
+        transform: translate3d(0, 18px, 0);
     }
 }

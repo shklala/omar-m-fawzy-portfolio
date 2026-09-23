@@ -40,11 +40,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="assets/profile-480.webp"
-        imagesrcset="assets/profile-320.webp 320w, assets/profile-480.webp 480w, assets/profile-640.webp 640w"
-        imagesizes="(max-width: 768px) 220px, 300px">
-
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=9">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap"
         rel="stylesheet">
@@ -206,7 +202,7 @@
                             <picture>
                                 <source type="image/webp"
                                     srcset="assets/profile-320.webp 320w, assets/profile-480.webp 480w, assets/profile-640.webp 640w"
-                                    sizes="(max-width: 768px) 220px, 300px">
+                                    sizes="(max-width: 768px) 120px, 140px">
                                 <img src="assets/profile-480.jpg" alt="Portrait of Omar Mohamed Fawzy"
                                     class="profile-photo" width="480" height="480" fetchpriority="high"
                                     decoding="async">
@@ -451,9 +447,20 @@
                 <p class="section-intro">Tools I have built for classrooms, hiring pipelines and support teams.
                     Internal platforms are marked private. Happy to walk through them on request.</p>
 
+                <div class="project-filters" role="group" aria-label="Filter projects">
+                    <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All <span
+                            class="filter-count"></span></button>
+                    <button type="button" class="filter-btn" data-filter="live" aria-pressed="false">Live <span
+                            class="filter-count"></span></button>
+                    <button type="button" class="filter-btn" data-filter="private" aria-pressed="false">Private <span
+                            class="filter-count"></span></button>
+                    <button type="button" class="filter-btn" data-filter="research" aria-pressed="false">Research <span
+                            class="filter-count"></span></button>
+                </div>
+
                 <div class="projects-grid">
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="live" data-cursor="OPEN">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-comment-dots"></i></span>
                             <span class="project-tag tag-live">Live</span>
@@ -477,7 +484,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="private" data-cursor="PRIVATE">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-users-gear"></i></span>
                             <span class="project-tag tag-private">Private</span>
@@ -499,7 +506,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="private" data-cursor="PRIVATE">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-graduation-cap"></i></span>
                             <span class="project-tag tag-private">Private</span>
@@ -519,7 +526,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="private" data-cursor="PRIVATE">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-headset"></i></span>
                             <span class="project-tag tag-private">Private</span>
@@ -541,7 +548,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="live" data-cursor="OPEN">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-clipboard-list"></i></span>
                             <span class="project-tag tag-live">Live</span>
@@ -563,7 +570,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="live" data-cursor="OPEN">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-robot"></i></span>
                             <span class="project-tag tag-live">Live</span>
@@ -586,7 +593,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="private" data-cursor="PRIVATE">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fab fa-whatsapp"></i></span>
                             <span class="project-tag tag-private">Private</span>
@@ -605,7 +612,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="private" data-cursor="PRIVATE">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-language"></i></span>
                             <span class="project-tag tag-private">Private</span>
@@ -626,7 +633,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="research" data-cursor="SOURCE">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-microchip"></i></span>
                             <span class="project-tag">Research</span>
@@ -646,7 +653,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="private" data-cursor="PRIVATE">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-chalkboard-user"></i></span>
                             <span class="project-tag tag-private">Private</span>
@@ -664,7 +671,7 @@
                         </div>
                     </article>
 
-                    <article class="project-card">
+                    <article class="project-card" data-filter="live" data-cursor="OPEN">
                         <div class="project-top">
                             <span class="project-icon" aria-hidden="true"><i class="fas fa-gamepad"></i></span>
                             <span class="project-tag tag-live">Live</span>
@@ -869,14 +876,19 @@
                             <i class="fas fa-envelope" aria-hidden="true"></i>
                             <div>
                                 <h4>Email</h4>
-                                <p><a href="mailto:omar55138@gmail.com">omar55138@gmail.com</a></p>
+                                <p><a href="mailto:omar55138@gmail.com">omar55138@gmail.com</a><button type="button"
+                                        class="copy-btn" data-copy="omar55138@gmail.com"
+                                        aria-label="Copy email address"><i class="fas fa-copy"
+                                            aria-hidden="true"></i></button></p>
                             </div>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone" aria-hidden="true"></i>
                             <div>
                                 <h4>Phone</h4>
-                                <p><a href="tel:+201098434894">+20 109 843 4894</a></p>
+                                <p><a href="tel:+201098434894">+20 109 843 4894</a><button type="button" class="copy-btn"
+                                        data-copy="+201098434894" aria-label="Copy phone number"><i
+                                            class="fas fa-copy" aria-hidden="true"></i></button></p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -953,6 +965,10 @@
 
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+        <svg viewBox="0 0 56 56" aria-hidden="true" focusable="false">
+            <circle class="ring-track" cx="28" cy="28" r="25"></circle>
+            <circle class="ring-fill" cx="28" cy="28" r="25"></circle>
+        </svg>
         <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
@@ -979,7 +995,7 @@
     <!-- Matrix transition canvas -->
     <canvas id="matrixRain" class="matrix-rain" aria-hidden="true"></canvas>
 
-    <script src="script.js" defer></script>
+    <script src="script.js?v=9" defer></script>
 </body>
 
 </html>

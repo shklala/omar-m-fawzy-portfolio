@@ -12,8 +12,13 @@
      7.  Contact form (async, stays on the page)
      8.  Notifications
      9.  Gamification (XP, coins, streak)
-     10. Ambient effects (starfield, skill stars, cursor trail, matrix rain)
+     10. Ambient effects (starfield, skill stars, matrix rain)
      11. Motion and interaction (scroll-spy, counters, spotlight, tilt, timeline)
+     12. Custom cursor (reticle, states, trail, magnetic elements)
+     13. Project filters
+     14. Progress ring, navbar auto-hide, hero fade
+     15. Copy to clipboard
+     16. Konami code
    ========================================================================= */
 
 (function () {
@@ -540,21 +545,6 @@
         }, 700);
     }
 
-    // --- Cursor trail ----------------------------------------------------
-    if (!coarsePointer && allowAmbient()) {
-        let lastTrail = 0;
-        window.addEventListener('mousemove', (e) => {
-            const now = Date.now();
-            if (now - lastTrail < 25 || reduceMotion) return;
-            lastTrail = now;
-            const dot = document.createElement('div');
-            dot.className = 'cursor-dot';
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
-            document.body.appendChild(dot);
-            setTimeout(() => dot.remove(), 350);
-        }, { passive: true });
-    }
 
     // --- Starfield background -------------------------------------------
     const starCanvas = $('#bgStars');
@@ -856,6 +846,324 @@
         const profileCard = $('.profile-card');
         if (profileCard) track(profileCard, true);
     }
+
+
+    /* ---------------------------------------------------------------------
+       12. Custom cursor
+       A reticle that lags behind a hard dot, changes shape over links and
+       text fields, and can carry a label supplied by data-cursor. Enabled
+       only for fine pointers with motion allowed, and switched on from JS so
+       the native cursor survives if any of this fails.
+       ------------------------------------------------------------------ */
+    if (!coarsePointer && !reduceMotion && window.matchMedia('(hover: hover)').matches) {
+        const cursor = document.createElement('div');
+        cursor.className = 'cursor';
+        cursor.setAttribute('aria-hidden', 'true');
+        cursor.innerHTML =
+            '<div class="cursor-ring"></div><div class="cursor-core"></div><div class="cursor-label"></div>';
+        document.body.appendChild(cursor);
+
+        const ring = cursor.querySelector('.cursor-ring');
+        const core = cursor.querySelector('.cursor-core');
+        const label = cursor.querySelector('.cursor-label');
+
+        // A fixed pool of trail dots: no allocation while the pointer moves.
+        const TRAIL = 6;
+        const trail = [];
+        for (let i = 0; i < TRAIL; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'cursor-trail';
+            dot.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(dot);
+            trail.push({ el: dot, x: 0, y: 0 });
+        }
+
+        let targetX = window.innerWidth / 2;
+        let targetY = window.innerHeight / 2;
+        let ringX = targetX;
+        let ringY = targetY;
+        let started = false;
+
+        document.addEventListener('pointermove', (e) => {
+            if (e.pointerType === 'touch') return;
+            targetX = e.clientX;
+            targetY = e.clientY;
+            if (!started) {
+                started = true;
+                ringX = targetX;
+                ringY = targetY;
+                cursor.classList.add('ready');
+                document.body.classList.add('cursor-on');
+            }
+        }, { passive: true });
+
+        document.addEventListener('pointerdown', () => cursor.classList.add('down'));
+        document.addEventListener('pointerup', () => cursor.classList.remove('down'));
+        document.addEventListener('pointerleave', () => cursor.classList.add('off'));
+        document.addEventListener('pointerenter', () => cursor.classList.remove('off'));
+        window.addEventListener('blur', () => cursor.classList.add('off'));
+        window.addEventListener('focus', () => cursor.classList.remove('off'));
+
+        // Shape follows whatever is under the pointer.
+        const LINK_SEL = 'a, button, .project-card, .skill-item, .stat, .badge, .social-link, [role="button"], summary';
+        const TEXT_SEL = 'input, textarea, select';
+
+        document.addEventListener('pointerover', (e) => {
+            const el = e.target;
+            if (!el || !el.closest) return;
+
+            const labelled = el.closest('[data-cursor]');
+            if (labelled) {
+                label.textContent = labelled.getAttribute('data-cursor');
+                cursor.classList.add('has-label');
+            } else {
+                cursor.classList.remove('has-label');
+                label.textContent = '';
+            }
+
+            cursor.classList.toggle('on-text', !!el.closest(TEXT_SEL));
+            cursor.classList.toggle('on-link', !el.closest(TEXT_SEL) && !!el.closest(LINK_SEL));
+        }, { passive: true });
+
+        const lerp = (a, b, n) => a + (b - a) * n;
+
+        (function drawCursor() {
+            ringX = lerp(ringX, targetX, 0.18);
+            ringY = lerp(ringY, targetY, 0.18);
+
+            core.style.transform = 'translate(' + targetX + 'px,' + targetY + 'px) translate(-50%,-50%)';
+            ring.style.transform = 'translate(' + ringX + 'px,' + ringY + 'px) translate(-50%,-50%)' +
+                (cursor.classList.contains('down') ? ' scale(0.8)' : '');
+            label.style.transform = 'translate(' + ringX + 'px,' + (ringY + 46) + 'px) translate(-50%,-50%)';
+
+            // Each trail dot chases the one in front of it.
+            let px = targetX;
+            let py = targetY;
+            for (let i = 0; i < trail.length; i++) {
+                const t = trail[i];
+                t.x = lerp(t.x, px, 0.4);
+                t.y = lerp(t.y, py, 0.4);
+                t.el.style.transform = 'translate(' + t.x + 'px,' + t.y + 'px) translate(-50%,-50%) scale(' +
+                    (1 - i / trail.length) + ')';
+                t.el.style.opacity = started ? String(0.35 * (1 - i / trail.length)) : '0';
+                px = t.x;
+                py = t.y;
+            }
+
+            requestAnimationFrame(drawCursor);
+        })();
+
+        /* --- Magnetic pull ------------------------------------------------ */
+        $$('.btn, .social-link, #backToTop, .filter-btn').forEach((el) => {
+            el.classList.add('magnetic');
+            const strength = el.classList.contains('btn') ? 0.28 : 0.4;
+
+            el.addEventListener('pointermove', (e) => {
+                const r = el.getBoundingClientRect();
+                const dx = e.clientX - (r.left + r.width / 2);
+                const dy = e.clientY - (r.top + r.height / 2);
+                el.classList.add('pulling');
+                el.style.transform = 'translate(' + dx * strength + 'px,' + dy * strength + 'px)';
+            }, { passive: true });
+
+            el.addEventListener('pointerleave', () => {
+                el.classList.remove('pulling');
+                el.style.transform = '';
+            });
+        });
+    }
+
+    /* ---------------------------------------------------------------------
+       13. Project filters
+       ------------------------------------------------------------------ */
+    const filterBar = $('.project-filters');
+    if (filterBar) {
+        const cards = $$('.project-card');
+        const buttons = $$('.filter-btn', filterBar);
+
+        // Fill in the counts from the markup rather than hard-coding them.
+        buttons.forEach((btn) => {
+            const f = btn.dataset.filter;
+            const n = f === 'all' ? cards.length : cards.filter((c) => c.dataset.filter === f).length;
+            const slot = btn.querySelector('.filter-count');
+            if (slot) slot.textContent = n;
+        });
+
+        const apply = (filter) => {
+            let shown = 0;
+            cards.forEach((card) => {
+                const match = filter === 'all' || card.dataset.filter === filter;
+                card.classList.toggle('filtered-out', !match);
+                if (match) {
+                    card.style.setProperty('--fi', String(shown++));
+                    card.classList.remove('filtering-in');
+                    // Restart the entrance animation.
+                    void card.offsetWidth;
+                    card.classList.add('filtering-in');
+                }
+            });
+            buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+        };
+
+        buttons.forEach((btn) => btn.addEventListener('click', () => apply(btn.dataset.filter)));
+    }
+
+    /* ---------------------------------------------------------------------
+       14. Back-to-top progress ring, navbar auto-hide, hero fade
+       ------------------------------------------------------------------ */
+    const ringFill = $('.back-to-top .ring-fill');
+    if (ringFill) {
+        const r = ringFill.r.baseVal.value;
+        const circ = 2 * Math.PI * r;
+        ringFill.style.setProperty('--circ', circ);
+        scrollFrameHooks.push((y) => {
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = max > 0 ? Math.min(1, y / max) : 0;
+            ringFill.style.setProperty('--offset', circ * (1 - pct));
+        });
+    }
+
+    if (navbar && !reduceMotion) {
+        let lastY = window.scrollY;
+        let travel = 0;
+
+        const showNav = () => {
+            navbar.classList.remove('nav-hidden');
+            travel = 0;
+        };
+
+        scrollFrameHooks.push((y) => {
+            const delta = y - lastY;
+            lastY = y;
+
+            // Accumulate distance in the current direction rather than judging
+            // each frame: a smooth scroll decelerates to sub-pixel deltas, which
+            // left the bar stuck in whatever state the last big frame set.
+            travel = (delta > 0) === (travel > 0) ? travel + delta : delta;
+
+            const menuOpen = navMenu && navMenu.classList.contains('active');
+            if (y <= 400 || menuOpen) {
+                showNav();
+            } else if (travel > 90) {
+                navbar.classList.add('nav-hidden');
+                travel = 0;
+            } else if (travel < -50) {
+                showNav();
+            }
+        });
+
+        // Jumping to a section must never leave the visitor without the nav.
+        $$('a[href^="#"]').forEach((a) => a.addEventListener('click', () => setTimeout(showNav, 60)));
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') showNav(); });
+    }
+
+    const heroContent = $('.hero-content');
+    const heroImage = $('.hero-image');
+    if (heroContent && !reduceMotion && !smallScreen) {
+        scrollFrameHooks.push((y) => {
+            const fade = Math.max(0, 1 - y / (window.innerHeight * 0.75));
+            heroContent.style.opacity = fade;
+            if (heroImage) heroImage.style.opacity = fade;
+        });
+    }
+
+    /* ---------------------------------------------------------------------
+       15. Copy to clipboard
+       ------------------------------------------------------------------ */
+    $$('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+            const value = btn.dataset.copy || '';
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(value);
+                } else {
+                    const tmp = document.createElement('textarea');
+                    tmp.value = value;
+                    tmp.setAttribute('readonly', '');
+                    tmp.style.position = 'fixed';
+                    tmp.style.opacity = '0';
+                    document.body.appendChild(tmp);
+                    tmp.select();
+                    document.execCommand('copy');
+                    tmp.remove();
+                }
+                const original = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i>';
+                showNotification('Copied ' + value, 'success');
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = original;
+                }, 1600);
+            } catch (err) {
+                showNotification('Could not copy. Please select the text instead.', 'error');
+            }
+        });
+    });
+
+    /* ---------------------------------------------------------------------
+       16. Konami code
+       The page already keeps a level and an XP bar, so the classic cheat
+       code granting a level felt like the honest payoff.
+       ------------------------------------------------------------------ */
+    (function konami() {
+        const SEQ = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft',
+            'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let pos = 0;
+
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+            pos = (key === SEQ[pos]) ? pos + 1 : (key === SEQ[0] ? 1 : 0);
+            if (pos < SEQ.length) return;
+            pos = 0;
+            unlock();
+        });
+
+        function unlock() {
+            addXP(XP_MAX - currentXP);
+            reward(50);
+
+            const panel = document.createElement('div');
+            panel.className = 'achievement';
+            panel.setAttribute('role', 'status');
+            panel.innerHTML =
+                '<div class="achievement-title">ACHIEVEMENT UNLOCKED</div>' +
+                '<div class="achievement-body">Level ' + currentLevel + ' reached. You found the cheat code.</div>' +
+                '<div class="achievement-hint">Thanks for looking this closely.</div>';
+            document.body.appendChild(panel);
+            // Flush layout so the transition has a start value to animate from.
+            // A single rAF was not reliably delivered before the class landed.
+            void panel.offsetWidth;
+            panel.classList.add('show');
+            setTimeout(() => {
+                panel.classList.add('leaving');
+                setTimeout(() => panel.remove(), 350);
+            }, 3800);
+
+            if (reduceMotion) return;
+
+            // Pixel confetti, cleaned up by the animation's own finish event.
+            const colors = ['#a5b4fc', '#fbbf24', '#34d399', '#60a5fa', '#f472b6'];
+            for (let i = 0; i < 60; i++) {
+                const bit = document.createElement('div');
+                bit.className = 'konami-burst';
+                bit.style.background = colors[i % colors.length];
+                document.body.appendChild(bit);
+
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 120 + Math.random() * 320;
+                const anim = bit.animate([
+                    { transform: 'translate(50vw, 40vh) scale(1)', opacity: 1 },
+                    {
+                        transform: 'translate(calc(50vw + ' + Math.cos(angle) * dist + 'px), calc(40vh + ' +
+                            (Math.sin(angle) * dist + 260) + 'px)) rotate(' + (Math.random() * 720 - 360) + 'deg) scale(0.3)',
+                        opacity: 0
+                    }
+                ], { duration: 1400 + Math.random() * 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+                anim.onfinish = () => bit.remove();
+            }
+        }
+    })();
 
     /* ---------------------------------------------------------------------
        Footer year, one less thing to go stale.
