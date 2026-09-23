@@ -2,8 +2,9 @@
 
 Personal portfolio site. **Live:** <https://shklala.github.io/omar-m-fawzy-portfolio/>
 
-Education Mentor & Product Specialist at iSchool New Cairo, and IT & Systems Administrator /
-Help Desk Lead / Software Control Specialist at Holol PMS UAE.
+Technical Product Specialist at iSchool: product management, full-stack delivery and
+automation across B2G and B2C. Also IT & Systems Administrator / Help Desk Lead at
+Holol PMS UAE.
 
 No build step, no framework, no dependencies. Three files and a folder of assets, served
 straight from GitHub Pages.
@@ -62,6 +63,7 @@ what GitHub Pages actually does.
 | Experience entries | `.timeline` in `index.html` |
 | Projects | `.projects-grid` in `index.html` (placeholder cards carry inline instructions) |
 | Skills and levels | `.skills-grid`; levels are the `expert` / `advanced` / `working` classes |
+| Project filters | cards carry `data-filter` (live/private/research) and `data-cursor` for the cursor label |
 | Resume PDF | replace `assets/Omar-Mohamed-Fawzy-Resume.pdf` |
 | Colors and spacing | the `ENHANCEMENTS` block at the bottom of `styles.css` |
 | Contact form endpoint | the `action` on `#contactForm` (currently Formspree) |

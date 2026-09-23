@@ -2,7 +2,7 @@
   "name": "omar-m-fawzy-portfolio",
   "version": "2.0.0",
   "private": true,
-  "description": "Personal portfolio of Omar M. Fawzy, Education Mentor & Product Specialist at iSchool, IT & Systems Administrator at Holol PMS UAE.",
+  "description": "Personal portfolio of Omar M. Fawzy, Technical Product Specialist: product management, full-stack delivery and automation.",
   "main": "index.html",
   "scripts": {
     "start": "python -m http.server 8000",
@@ -12,8 +12,10 @@
   "keywords": [
     "portfolio",
     "personal-website",
-    "education-mentor",
-    "coding-instructor",
+    "product-specialist",
+    "product-management",
+    "full-stack",
+    "automation",
     "python",
     "it-administrator",
     "help-desk",

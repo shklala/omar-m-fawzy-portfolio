@@ -765,12 +765,15 @@
             statObserver.unobserve(el);
 
             const text = el.textContent.trim();
-            const match = text.match(/^(\D*)(\d+)(.*)$/);
+            // Accept thousands separators, so "3,800+" counts the whole number
+            // rather than just the leading digit.
+            const match = text.match(/^(\D*)([\d,]+)(.*)$/);
             if (!match || reduceMotion) return;
 
             const [, prefix, digits, suffix] = match;
-            const target = parseInt(digits, 10);
-            if (!target || target > 10000) return;
+            const target = parseInt(digits.replace(/,/g, ''), 10);
+            if (!target || target > 1000000) return;
+            const grouped = digits.indexOf(',') !== -1;
 
             const duration = 1100;
             const start = performance.now();
@@ -778,7 +781,8 @@
                 const t = Math.min(1, (now - start) / duration);
                 // easeOutCubic
                 const eased = 1 - Math.pow(1 - t, 3);
-                el.textContent = prefix + Math.round(target * eased) + suffix;
+                const n = Math.round(target * eased);
+                el.textContent = prefix + (grouped ? n.toLocaleString('en-US') : n) + suffix;
                 if (t < 1) requestAnimationFrame(step);
                 else el.textContent = text;
             };
