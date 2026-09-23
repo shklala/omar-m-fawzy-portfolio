@@ -1,0 +1,14 @@
+{
+  "name": "Omar M. Fawzy — Portfolio",
+  "short_name": "OMF",
+  "description": "Education Mentor & Product Specialist, IT & Systems Administrator.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#070b16",
+  "theme_color": "#070b16",
+  "icons": [
+    { "src": "omf.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

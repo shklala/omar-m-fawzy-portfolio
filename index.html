@@ -2,504 +2,948 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-    <title>Omar Mohamed Fawzy - Education Mentor | IT & Systems Administrator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#070b16">
+
+    <title>Omar M. Fawzy — Education Mentor &amp; Product Specialist | IT &amp; Systems Administrator</title>
     <meta name="description"
-        content="Omar Mohamed Fawzy - Education Mentor at iSchool and IT & Systems Administrator, Help Desk Lead, and Software Control Specialist at Holol UAE.">
+        content="Omar Mohamed Fawzy — Education Mentor &amp; Product Specialist at iSchool and IT &amp; Systems Administrator / Help Desk Lead at Holol PMS UAE. Coding education, team mentorship, IT operations, and internal platforms built with Python, TypeScript, React and PostgreSQL.">
+    <meta name="author" content="Omar Mohamed Fawzy">
     <meta name="keywords"
-        content="IT Administrator, Systems Administrator, Help Desk Lead, Software Control, Holol UAE, Coding Instructor, Python, Data Science">
+        content="Omar Fawzy, Education Mentor, Product Specialist, iSchool, Coding Instructor, Python, TypeScript, React, Next.js, PostgreSQL, K-12 coding education, IT Systems Administrator, Help Desk Lead, Software Control Specialist, Holol PMS UAE, Cairo, Egypt">
+    <link rel="canonical" href="https://shklala.github.io/omar-m-fawzy-portfolio/">
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="Omar M. Fawzy — Portfolio">
+    <meta property="og:title" content="Omar M. Fawzy — Education Mentor &amp; IT Systems Administrator">
+    <meta property="og:description"
+        content="Coding education, team mentorship, IT operations — and the internal platforms behind them. Education Mentor &amp; Product Specialist at iSchool, IT &amp; Systems Administrator at Holol PMS UAE.">
+    <meta property="og:url" content="https://shklala.github.io/omar-m-fawzy-portfolio/">
+    <meta property="og:image" content="https://shklala.github.io/omar-m-fawzy-portfolio/assets/og-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Omar M. Fawzy — Education Mentor and IT Systems Administrator">
+    <meta property="profile:first_name" content="Omar">
+    <meta property="profile:last_name" content="Fawzy">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Omar M. Fawzy — Education Mentor &amp; IT Systems Administrator">
+    <meta name="twitter:description"
+        content="Coding education, team mentorship, IT operations and internal tooling. Based in Cairo, Egypt.">
+    <meta name="twitter:image" content="https://shklala.github.io/omar-m-fawzy-portfolio/assets/og-card.jpg">
+
     <link rel="icon" type="image/svg+xml" href="omf.svg">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="assets/profile-480.webp"
+        imagesrcset="assets/profile-320.webp 320w, assets/profile-480.webp 480w, assets/profile-640.webp 640w"
+        imagesizes="(max-width: 768px) 220px, 300px">
+
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap"
         rel="stylesheet">
+    <!-- Icon font loaded non-blocking so it never delays first paint -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <!-- Without JS the start screen can never be dismissed, so remove it
+             and show the content that the intro would otherwise hide. -->
+        <style>
+            .prestart {
+                overflow: auto !important;
+            }
+
+            .prestart .start-reveal {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            .start-screen,
+            .bg-stars,
+            .matrix-rain,
+            .gamification-hud {
+                display: none !important;
+            }
+        </style>
+    </noscript>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Omar Mohamed Fawzy",
+      "alternateName": "Omar M. Fawzy",
+      "jobTitle": ["Education Mentor & Product Specialist", "IT & Systems Administrator"],
+      "url": "https://shklala.github.io/omar-m-fawzy-portfolio/",
+      "image": "https://shklala.github.io/omar-m-fawzy-portfolio/assets/profile-640.webp",
+      "email": "mailto:omar55138@gmail.com",
+      "telephone": "+201098434894",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Giza",
+        "addressRegion": "Cairo",
+        "addressCountry": "EG"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/omarmfawzy/",
+        "https://github.com/shklala"
+      ],
+      "worksFor": [
+        { "@type": "Organization", "name": "iSchool New Cairo" },
+        { "@type": "Organization", "name": "Holol PMS UAE" }
+      ],
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Culture and Science City"
+      },
+      "knowsLanguage": [
+        { "@type": "Language", "name": "Arabic" },
+        { "@type": "Language", "name": "English" }
+      ],
+      "knowsAbout": ["Coding Education", "Python", "TypeScript", "React", "Next.js", "PostgreSQL", "Artificial Intelligence", "IT Systems Administration", "Help Desk Operations", "Mentorship", "Curriculum Design"]
+    }
+    </script>
 </head>
 
 <body class="theme-dark gamer prestart">
+    <a href="#main" class="skip-link">Skip to main content</a>
+
     <canvas id="bgStars" class="bg-stars" aria-hidden="true"></canvas>
-    <nav class="navbar">
+
+    <nav class="navbar" aria-label="Primary">
         <div class="nav-container">
             <div class="nav-logo">
                 <a href="#home">Omar M. Fawzy</a>
             </div>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#home" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#experience" class="nav-link">Experience</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#skills" class="nav-link">Skills</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#education" class="nav-link">Education</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link">Contact</a>
-                </li>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#experience" class="nav-link">Experience</a></li>
+                <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="#skills" class="nav-link">Skills</a></li>
+                <li class="nav-item"><a href="#education" class="nav-link">Education</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
-            <div class="nav-toggle">
+            <button type="button" class="nav-toggle" id="navToggle" aria-label="Open navigation menu"
+                aria-expanded="false" aria-controls="navMenu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
-            </div>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero start-reveal" style="--start-delay:150ms">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title neon" data-type-on-start="true">Omar M.Fawzy</h1>
-                <h2 class="hero-subtitle" data-type-on-start="true">Education Mentor @ iSchool | IT & Systems Administrator | Help Desk Lead | Software Control Specialist @ Holol UAE</h2>
-                <p class="hero-description" data-type-on-start="true">
-                    I combine technical and pedagogical expertise to build engaging, student-centered coding experiences.
-                    With a Computer Science background and hands-on leadership in education and IT operations, I focus on
-                    improving teaching quality, solving problems quickly, and creating measurable impact.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">Get In Touch</a>
-                    <a href="#experience" class="btn btn-secondary">View Experience</a>
-                </div>
-                <div class="player-hud">
-                    <div class="hud-row"><span class="hud-label">Level</span><span class="hud-value"
-                            id="playerLevel">12</span></div>
-                    <div class="xp-bar">
-                        <div class="xp-fill" id="xpFill"></div>
-                    </div>
-                    <div class="hud-row small"><span class="hud-label">XP</span><span class="hud-value" id="playerXP">0
-                            / 10000</span></div>
-                    <div class="badge-list">
-                        <span class="badge">IT & Systems Admin</span>
-                        <span class="badge">Help Desk Lead</span>
-                        <span class="badge">Software Control</span>
-                        <span class="badge">Python Educator</span>
-                    </div>
-                </div>
-
-                <div class="hero-links">
-                    <a href="https://www.linkedin.com/in/omarmfawzy/" target="_blank" class="social-link">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="mailto:omar55138@gmail.com" class="social-link">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="tel:+201098434894" class="social-link">
-                        <i class="fas fa-phone"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="profile-card">
-                    <div class="profile-avatar">
-                        <img src="3.png" alt="Omar M. Fawzy" class="profile-photo" loading="lazy">
-                    </div>
-                    <div class="profile-info">
-                        <h3>Omar Mohamed Fawzy</h3>
-                        <p>Egypt</p>
-                        <p>Education Mentor @ iSchool</p>
-                        <p>IT & Systems Administrator @ Holol UAE</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about start-reveal" style="--start-delay:250ms">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>
-                        iSchool fosters an engaging and student-centered learning environment where coding education is
-                        delivered with a blend of technical and pedagogical expertise. As an Education Mentor, my work
-                        focuses on crafting interactive sessions, workshops, and camps while assessing student progress
-                        and providing constructive feedback to enhance skills and critical thinking.
+    <main id="main">
+        <!-- Hero Section -->
+        <section id="home" class="hero start-reveal" style="--start-delay:150ms" aria-labelledby="heroTitle">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title neon" id="heroTitle" data-type-on-start="true">Omar M. Fawzy</h1>
+                    <p class="hero-subtitle" data-type-on-start="true">Education Mentor &amp; Product Specialist @
+                        iSchool &nbsp;|&nbsp; IT &amp; Systems Administrator, Help Desk Lead &amp; Software Control
+                        Specialist @ Holol PMS UAE</p>
+                    <p class="hero-description">
+                        I blend technical and pedagogical expertise to run student-centred coding education at scale —
+                        leading a team of tutors, safeguarding session quality, and building the internal tools my
+                        teams actually run on: hiring pipelines, support platforms and training dashboards.
                     </p>
-                    <p>
-                        With a Bachelor's degree in Computer Science from Culture and Science City, I have also
-                        contributed to AI robustness projects through mathematics-focused error analysis and model
-                        stress-testing.
-                    </p>
-                    <p>
-                        Previous customer service and operations experience strengthened my communication, adaptability,
-                        and problem-solving skills. I am dedicated to empowering learners and advancing innovative
-                        education through technology.
-                    </p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>1+ Year</h3>
-                            <p>Mentoring & Instruction</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                        <a href="#experience" class="btn btn-secondary">View Experience</a>
+                        <a href="assets/Omar-Mohamed-Fawzy-Resume.pdf" class="btn btn-ghost" download>
+                            <i class="fas fa-file-arrow-down" aria-hidden="true"></i> Download Resume
+                        </a>
+                    </div>
+
+                    <div class="player-hud">
+                        <div class="hud-row"><span class="hud-label">Level</span><span class="hud-value"
+                                id="playerLevel">12</span></div>
+                        <div class="xp-bar" role="presentation">
+                            <div class="xp-fill" id="xpFill"></div>
                         </div>
-                        <div class="stat">
-                            <h3>1y 9m</h3>
-                            <p>iSchool Experience</p>
+                        <div class="hud-row small"><span class="hud-label">XP</span><span class="hud-value"
+                                id="playerXP">0 / 10000</span></div>
+                        <div class="badge-list">
+                            <span class="badge">Education Mentor</span>
+                            <span class="badge">Product Specialist</span>
+                            <span class="badge">IT &amp; Systems Admin</span>
+                            <span class="badge">Help Desk Lead</span>
+                            <span class="badge">Python Educator</span>
+                            <span class="badge">TypeScript &amp; React</span>
+                            <span class="badge">Internal Tooling</span>
                         </div>
-                        <div class="stat">
-                            <h3>10m+</h3>
-                            <p>Holol UAE Role</p>
+                    </div>
+
+                    <div class="hero-links">
+                        <a href="https://www.linkedin.com/in/omarmfawzy/" target="_blank" rel="noopener"
+                            class="social-link" aria-label="LinkedIn profile">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://github.com/shklala" target="_blank" rel="noopener" class="social-link"
+                            aria-label="GitHub profile">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                        </a>
+                        <a href="mailto:omar55138@gmail.com" class="social-link" aria-label="Send an email">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </a>
+                        <a href="tel:+201098434894" class="social-link" aria-label="Call Omar">
+                            <i class="fas fa-phone" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-image">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <picture>
+                                <source type="image/webp"
+                                    srcset="assets/profile-320.webp 320w, assets/profile-480.webp 480w, assets/profile-640.webp 640w"
+                                    sizes="(max-width: 768px) 220px, 300px">
+                                <img src="assets/profile-480.jpg" alt="Portrait of Omar Mohamed Fawzy"
+                                    class="profile-photo" width="480" height="480" fetchpriority="high"
+                                    decoding="async">
+                            </picture>
                         </div>
-                        <div class="stat">
-                            <h3>C1/C2</h3>
-                            <p>English Proficiency</p>
+                        <div class="profile-info">
+                            <h2>Omar Mohamed Fawzy</h2>
+                            <p>Giza, Cairo — Egypt</p>
+                            <p>Education Mentor &amp; Product Specialist @ iSchool</p>
+                            <p>IT &amp; Systems Administrator @ Holol PMS UAE</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="experience start-reveal" style="--start-delay:350ms">
-        <div class="container">
-            <h2 class="section-title">Professional Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3 data-type-on-scroll="12">Education Mentor</h3>
-                            <span class="company" data-type-on-scroll="14">iSchool</span>
-                            <span class="period" data-type-on-scroll="14">11/2025 - Present</span>
-                        </div>
-                        <div class="timeline-description">
-                            <h4>Key Achievements:</h4>
-                            <ul>
-                                <li data-type-on-scroll="14">Lead and mentor a team of tutors to maintain exceptional teaching standards</li>
-                                <li data-type-on-scroll="14">Oversee live sessions to ensure strong engagement and learning outcomes</li>
-                                <li data-type-on-scroll="14">Coach tutors with continuous performance feedback on clarity and pacing</li>
-                                <li data-type-on-scroll="14">Prepare and optimize session materials for top-tier quality</li>
-                                <li data-type-on-scroll="14">Handle urgent covers and team requests efficiently</li>
-                                <li data-type-on-scroll="14">Deliver weekly performance reports with actionable insights</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3 data-type-on-scroll="12">Instructor</h3>
-                            <span class="company" data-type-on-scroll="14">iSchool</span>
-                            <span class="period" data-type-on-scroll="14">07/2024 - 11/2025</span>
-                        </div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li data-type-on-scroll="14">Facilitated coding sessions, workshops, and camps for students</li>
-                                <li data-type-on-scroll="14">Created engaging educational content and interactive learning experiences</li>
-                                <li data-type-on-scroll="14">Assessed student performance and delivered constructive feedback</li>
-                                <li data-type-on-scroll="14">Maintained classroom standards and a collaborative learning culture</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3 data-type-on-scroll="12">IT & Systems Administrator | Help Desk Lead | Software Control Specialist</h3>
-                            <span class="company" data-type-on-scroll="14">Holol PMS UAE</span>
-                            <span class="period" data-type-on-scroll="14">06/2025 - Present</span>
-                        </div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li data-type-on-scroll="14">Administer and maintain IT infrastructure for high availability and performance</li>
-                                <li data-type-on-scroll="14">Lead help desk operations and resolve user issues efficiently</li>
-                                <li data-type-on-scroll="14">Oversee software deployment, licensing, and compliance controls</li>
-                                <li data-type-on-scroll="14">Implement updates and security protocols with cross-functional teams</li>
-                                <li data-type-on-scroll="14">Support team needs in a part-time remote capacity</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3 data-type-on-scroll="12">Mathematics Expertise for AI Training</h3>
-                            <span class="company" data-type-on-scroll="14">Outlier</span>
-                            <span class="period" data-type-on-scroll="14">09/2024 - 05/2025</span>
-                        </div>
-                        <div class="timeline-description">
-                            <p data-type-on-scroll="16">Focused on intentionally generating and analyzing mathematical
-                                errors within AI models to enhance fault tolerance and error detection mechanisms.
-                                Stress-tested computations, identified vulnerabilities, and proposed improvements for
-                                robustness and accuracy.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3 data-type-on-scroll="12">Customer Service Associate</h3>
-                            <span class="company" data-type-on-scroll="14">Amazon</span>
-                            <span class="period" data-type-on-scroll="14">08/2023 - 05/2024</span>
-                        </div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li data-type-on-scroll="14">Helped customers in Egypt and Saudi Arabia via phone, email, and chat</li>
-                                <li data-type-on-scroll="14">Resolved issues including tracking, returns, and account problems</li>
-                                <li data-type-on-scroll="14">Met response time and satisfaction goals consistently</li>
-                                <li data-type-on-scroll="14">Collaborated with teams and assisted in onboarding new members</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3 data-type-on-scroll="12">Operation</h3>
-                            <span class="company" data-type-on-scroll="14">Teleperformance</span>
-                            <span class="period" data-type-on-scroll="14">07/2022 - 12/2022</span>
-                        </div>
-                        <div class="timeline-description">
-                            <ul>
-                                <li data-type-on-scroll="14">Supported operations workflows and performance targets in a dynamic team environment</li>
-                                <li data-type-on-scroll="14">Built strong communication and service-delivery discipline under fast-paced conditions</li>
-                            </ul>
+        <!-- About Section -->
+        <section id="about" class="about start-reveal" style="--start-delay:250ms" aria-labelledby="aboutTitle">
+            <div class="container">
+                <h2 class="section-title" id="aboutTitle">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>
+                            At iSchool I help run an engaging, student-centred learning environment where coding
+                            education is delivered with a blend of technical and pedagogical expertise. My work focuses
+                            on crafting interactive sessions, workshops and camps, assessing student progress, and
+                            giving tutors and students the constructive feedback that actually moves the needle.
+                        </p>
+                        <p>
+                            Alongside that, I administer IT infrastructure and lead help desk operations for Holol PMS
+                            in the UAE — software deployment, licensing, compliance and security protocols. The
+                            classroom and the server room use the same muscle: find the problem, fix it clearly,
+                            document it so it stays fixed.
+                        </p>
+                        <p>
+                            When a process is slow, I build the tool that fixes it. That has meant an onboarding system
+                            tracking candidates from application to trained tutor, a support platform pairing an Arabic
+                            AI tier with human escalation, WhatsApp tooling for tutor support, and training dashboards
+                            — mostly TypeScript, React and PostgreSQL, shipped to people who depend on them daily.
+                        </p>
+                        <p>
+                            I hold a Bachelor's degree in Computer Science from Culture and Science City, and I
+                            contributed to AI robustness work with Outlier — deliberately generating and analysing
+                            mathematical errors to strengthen model fault tolerance and error detection. Earlier roles
+                            at Amazon, Teleperformance and Vodafone built the communication and composure I rely on
+                            every day.
+                        </p>
+                        <div class="about-stats">
+                            <div class="stat">
+                                <h3>2+ yrs</h3>
+                                <p>Coding Education &amp; Mentorship</p>
+                            </div>
+                            <div class="stat">
+                                <h3>1+ yr</h3>
+                                <p>IT &amp; Systems Administration</p>
+                            </div>
+                            <div class="stat">
+                                <h3>6</h3>
+                                <p>Organizations Worked With</p>
+                            </div>
+                            <div class="stat">
+                                <h3>C1</h3>
+                                <p>English — EF SET 62/100</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills start-reveal" style="--start-delay:450ms">
-        <div class="container">
-            <h2 class="section-title">Skills & Expertise</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <div class="skill-stars" aria-hidden="true"></div>
-                    <h3>Programming & Development</h3>
-                    <div class="skill-items">
-                        <div class="skill-item expert">
-                            <span class="skill-name">Python</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Mathematical Programming</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Competitive Programming</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Software Development</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Web Development</span>
-                            <span class="skill-level">Expert</span>
+        <!-- Experience Section -->
+        <section id="experience" class="experience start-reveal" style="--start-delay:350ms" aria-labelledby="expTitle">
+            <div class="container">
+                <h2 class="section-title" id="expTitle">Professional Experience</h2>
+                <div class="timeline">
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3 data-type-on-scroll="12">Education Mentor &amp; Product Specialist</h3>
+                                <span class="company" data-type-on-scroll="14">iSchool New Cairo</span>
+                                <span class="period" data-type-on-scroll="14">Nov 2025 — Present</span>
+                            </div>
+                            <div class="timeline-description">
+                                <h4>Key Responsibilities</h4>
+                                <ul>
+                                    <li data-type-on-scroll="14">Lead and mentor a team of tutors to maintain
+                                        exceptional teaching standards</li>
+                                    <li data-type-on-scroll="14">Oversee live sessions to ensure smooth delivery, high
+                                        engagement and strong learning outcomes</li>
+                                    <li data-type-on-scroll="14">Coach tutors with continuous performance feedback on
+                                        teaching style, pacing and clarity</li>
+                                    <li data-type-on-scroll="14">Prepare, review and optimize all session materials to
+                                        ensure top-tier quality</li>
+                                    <li data-type-on-scroll="14">Handle urgent covers and team requests efficiently and
+                                        professionally</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="skill-category">
-                    <div class="skill-stars" aria-hidden="true"></div>
-                    <h3>Mathematics & Tools</h3>
-                    <div class="skill-items">
-                        <div class="skill-item expert">
-                            <span class="skill-name">Mathematics</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">LaTeX</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Mathematica</span>
-                            <span class="skill-level">Expert</span>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3 data-type-on-scroll="12">IT &amp; Systems Administrator | Help Desk Lead | Software
+                                    Control Specialist</h3>
+                                <span class="company" data-type-on-scroll="14">Holol PMS — United Arab Emirates</span>
+                                <span class="period" data-type-on-scroll="14">Jun 2025 — Present · Part-time,
+                                    Remote</span>
+                            </div>
+                            <div class="timeline-description">
+                                <ul>
+                                    <li data-type-on-scroll="14">Administer and maintain IT infrastructure and systems
+                                        for high availability and performance</li>
+                                    <li data-type-on-scroll="14">Lead help desk operations, providing technical support
+                                        and resolving user issues efficiently</li>
+                                    <li data-type-on-scroll="14">Oversee software deployment, licensing and compliance
+                                        with organizational policies</li>
+                                    <li data-type-on-scroll="14">Collaborate with teams to implement system updates and
+                                        security protocols</li>
+                                    <li data-type-on-scroll="14">Support team needs reliably in a part-time, remote
+                                        capacity</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="skill-category">
-                    <div class="skill-stars" aria-hidden="true"></div>
-                    <h3>Education & Teaching</h3>
-                    <div class="skill-items">
-                        <div class="skill-item expert">
-                            <span class="skill-name">K-12 Education</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Education</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Skill Development</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Curriculum Development</span>
-                            <span class="skill-level">Expert</span>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3 data-type-on-scroll="12">Mathematics Expertise for AI Training</h3>
+                                <span class="company" data-type-on-scroll="14">Outlier — United States</span>
+                                <span class="period" data-type-on-scroll="14">Sep 2024 — May 2025</span>
+                            </div>
+                            <div class="timeline-description">
+                                <ul>
+                                    <li data-type-on-scroll="14">Intentionally generated and analysed mathematical
+                                        errors within AI models to strengthen fault tolerance and error detection</li>
+                                    <li data-type-on-scroll="14">Stress-tested mathematical computations and identified
+                                        model vulnerabilities</li>
+                                    <li data-type-on-scroll="14">Proposed improvements for AI robustness and accuracy
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="skill-category">
-                    <h3>Professional Skills</h3>
-                    <div class="skill-items">
-                        <div class="skill-item expert">
-                            <span class="skill-name">Software Development Life Cycle</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Easily Adaptable</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Problem Solving</span>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                        <div class="skill-item expert">
-                            <span class="skill-name">Communication</span>
-                            <span class="skill-level">Expert</span>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3 data-type-on-scroll="12">Instructor</h3>
+                                <span class="company" data-type-on-scroll="14">iSchool New Cairo — Cairo, Egypt</span>
+                                <span class="period" data-type-on-scroll="14">Jul 2024 — Nov 2025</span>
+                            </div>
+                            <div class="timeline-description">
+                                <ul>
+                                    <li data-type-on-scroll="14">Led educational sessions, workshops and camps for
+                                        students</li>
+                                    <li data-type-on-scroll="14">Created engaging, informative content to deliver
+                                        knowledge effectively</li>
+                                    <li data-type-on-scroll="14">Assessed student performance and provided detailed,
+                                        constructive feedback</li>
+                                    <li data-type-on-scroll="14">Crafted learning experiences that prioritise students'
+                                        needs</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3 data-type-on-scroll="12">Customer Service Associate</h3>
+                                <span class="company" data-type-on-scroll="14">Amazon — Egypt</span>
+                                <span class="period" data-type-on-scroll="14">Aug 2023 — May 2024</span>
+                            </div>
+                            <div class="timeline-description">
+                                <ul>
+                                    <li data-type-on-scroll="14">Supported customers across Egypt and Saudi Arabia via
+                                        phone, email and chat</li>
+                                    <li data-type-on-scroll="14">Resolved order tracking, returns and account issues
+                                    </li>
+                                    <li data-type-on-scroll="14">Met performance goals for response time and customer
+                                        satisfaction</li>
+                                    <li data-type-on-scroll="14">Collaborated across teams to resolve escalated concerns
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3 data-type-on-scroll="12">Trainee → Operations</h3>
+                                <span class="company" data-type-on-scroll="14">Teleperformance — Cairo, Egypt</span>
+                                <span class="period" data-type-on-scroll="14">Jun 2022 — Dec 2022</span>
+                            </div>
+                            <div class="timeline-description">
+                                <ul>
+                                    <li data-type-on-scroll="14">Completed the Fifth Settlement training programme and
+                                        progressed into an operations role</li>
+                                    <li data-type-on-scroll="14">Supported operations workflows and performance targets
+                                        in a fast-paced team environment</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3 data-type-on-scroll="12">Customer Service Agent</h3>
+                                <span class="company" data-type-on-scroll="14">Vodafone — Cairo, Egypt</span>
+                                <span class="period" data-type-on-scroll="14">Jun 2019 — Oct 2019</span>
+                            </div>
+                            <div class="timeline-description">
+                                <ul>
+                                    <li data-type-on-scroll="14">First professional role — handled customer enquiries
+                                        and built the service fundamentals I still use today</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Education Section -->
-    <section id="education" class="education start-reveal" style="--start-delay:550ms">
-        <div class="container">
-            <h2 class="section-title">Education & Background</h2>
-            <div class="education-content">
-                <div class="education-item">
-                    <div class="education-header">
-                        <h3>Bachelor's Degree in Computer Science</h3>
-                        <span class="institution">Culture and Science City</span>
-                        <span class="period">2019 - 2023</span>
-                    </div>
-                    <div class="education-description">
-                        <ul>
-                            <li>Built strong foundation in data structures, algorithms, and object-oriented programming
-                            </li>
-                            <li>Focused on Python development and practical applications</li>
-                            <li>Participated in national and regional competitive programming contests</li>
-                            <li>Led multiple university projects involving web development, automation scripts, and
-                                basic AI systems</li>
-                            <li>Collaborated on group software engineering projects using agile practices</li>
-                            <li>Graduated with solid academic track record and passion for practical coding solutions
-                            </li>
+        <!-- Projects Section -->
+        <section id="projects" class="projects start-reveal" style="--start-delay:400ms"
+            aria-labelledby="projectsTitle">
+            <div class="container">
+                <h2 class="section-title" id="projectsTitle">Selected Work</h2>
+                <p class="section-intro">Tools I have built for classrooms, hiring pipelines and support teams.
+                    Internal platforms are marked private — happy to walk through them on request.</p>
+
+                <div class="projects-grid">
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-comment-dots"></i></span>
+                            <span class="project-tag tag-live">Live</span>
+                        </div>
+                        <h3>Smart Student Feedback Generator</h3>
+                        <p>A tool that helps teachers write personalised, constructive feedback fast — template
+                            generation across tones and categories, AI-written custom feedback, and a conversational
+                            refinement loop ("make it shorter", "add more encouragement") with one-click copy.</p>
+                        <ul class="project-stack">
+                            <li>JavaScript</li>
+                            <li>Puter.js AI</li>
+                            <li>HTML5</li>
+                            <li>CSS3</li>
                         </ul>
-                    </div>
-                </div>
-            </div>
+                        <div class="project-links">
+                            <a href="https://github.com/shklala/ST-Feed-Back-Generator-" target="_blank"
+                                rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> Source</a>
+                            <a href="https://shklala.github.io/ST-Feed-Back-Generator-/" target="_blank"
+                                rel="noopener"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                                Live</a>
+                        </div>
+                    </article>
 
-            <div class="languages-section">
-                <h3>Certifications</h3>
-                <div class="language-items">
-                    <div class="language-item">
-                        <span class="language-name">EF SET English Certificate</span>
-                        <span class="language-level">62/100 (C1 Advanced)</span>
-                    </div>
-                    <div class="language-item">
-                        <span class="language-name">Cambridge English Assessment (K-12 Ed.)</span>
-                        <span class="language-level">25/25 (C2 Proficient)</span>
-                    </div>
-                </div>
-            </div>
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-users-gear"></i></span>
+                            <span class="project-tag tag-private">Private</span>
+                        </div>
+                        <h3>Onboarding Management System</h3>
+                        <p>End-to-end candidate pipeline tracking for recruitment, onboarding and training at iSchool —
+                            from application through to a trained, active tutor. Built as a production internal tool
+                            with role-based access and row-level security.</p>
+                        <ul class="project-stack">
+                            <li>React</li>
+                            <li>TypeScript</li>
+                            <li>Vite</li>
+                            <li>Tailwind</li>
+                            <li>PostgreSQL</li>
+                            <li>Edge Functions</li>
+                        </ul>
+                        <div class="project-links">
+                            <span class="project-soon">Private repository — demo on request</span>
+                        </div>
+                    </article>
 
-            <div class="languages-section">
-                <h3>Languages</h3>
-                <div class="language-items">
-                    <div class="language-item">
-                        <span class="language-name">Arabic</span>
-                        <span class="language-level">Native</span>
-                    </div>
-                    <div class="language-item">
-                        <span class="language-name">English</span>
-                        <span class="language-level">Fluent</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-graduation-cap"></i></span>
+                            <span class="project-tag tag-private">Private</span>
+                        </div>
+                        <h3>Hiring &amp; LMS Platform</h3>
+                        <p>A combined hiring and learning-management platform for iSchool, carrying a single canonical
+                            migration history — every table ships with its grants and row-level security policies in the
+                            same migration, so the schema stays auditable as the platform grows.</p>
+                        <ul class="project-stack">
+                            <li>TypeScript</li>
+                            <li>PostgreSQL</li>
+                            <li>RLS Policies</li>
+                            <li>Migrations</li>
+                        </ul>
+                        <div class="project-links">
+                            <span class="project-soon">Private repository — demo on request</span>
+                        </div>
+                    </article>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact start-reveal" style="--start-delay:650ms">
-        <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p><a href="mailto:omar55138@gmail.com">omar55138@gmail.com</a></p>
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-headset"></i></span>
+                            <span class="project-tag tag-private">Private</span>
+                        </div>
+                        <h3>MASera Support Hub</h3>
+                        <p>A standalone customer support platform: an AI tier answering in Egyptian Arabic grounded
+                            strictly in official FAQs, automatic handoff to human agents for billing and account issues,
+                            a three-pane agent inbox, and race-condition-free ticket claiming using Postgres row locks.
+                        </p>
+                        <ul class="project-stack">
+                            <li>TypeScript</li>
+                            <li>Gemini AI</li>
+                            <li>Telegram API</li>
+                            <li>n8n</li>
+                            <li>PostgreSQL</li>
+                        </ul>
+                        <div class="project-links">
+                            <span class="project-soon">Private repository — demo on request</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-clipboard-list"></i></span>
+                            <span class="project-tag tag-live">Live</span>
+                        </div>
+                        <h3>Session Issue Report Generator</h3>
+                        <p>Turns messy session problems into structured, consistent reports for moderation — dependent
+                            category and issue-type dropdowns, pre-filled description templates, session slot and
+                            student ID, formatted and copied in one click.</p>
+                        <ul class="project-stack">
+                            <li>HTML5</li>
+                            <li>CSS3</li>
+                            <li>JavaScript</li>
+                        </ul>
+                        <div class="project-links">
+                            <a href="https://github.com/shklala/feedback-creator" target="_blank" rel="noopener"><i
+                                    class="fab fa-github" aria-hidden="true"></i> Source</a>
+                            <a href="https://shklala.github.io/feedback-creator/" target="_blank" rel="noopener"><i
+                                    class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Live</a>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-robot"></i></span>
+                            <span class="project-tag tag-live">Live</span>
+                        </div>
+                        <h3>Chatbot Academy</h3>
+                        <p>An interactive academy teaching Python and AI concepts through chatbot lessons — a
+                            progressive curriculum, an in-browser code editor, and a gamified achievement and progress
+                            system. The teaching philosophy from my day job, shipped as software.</p>
+                        <ul class="project-stack">
+                            <li>JavaScript</li>
+                            <li>HTML5</li>
+                            <li>CSS3</li>
+                            <li>Python</li>
+                        </ul>
+                        <div class="project-links">
+                            <a href="https://github.com/shklala/chatbot-lessons" target="_blank" rel="noopener"><i
+                                    class="fab fa-github" aria-hidden="true"></i> Source</a>
+                            <a href="https://shklala.github.io/chatbot-lessons/" target="_blank" rel="noopener"><i
+                                    class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Live</a>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fab fa-whatsapp"></i></span>
+                            <span class="project-tag tag-private">Private</span>
+                        </div>
+                        <h3>Tutor Support Platform</h3>
+                        <p>A WhatsApp support tool for tutors built on the 360dialog API — conversation queue and
+                            assignment, open/close lifecycle, broadcast messaging, tagging, and a visual chatbot
+                            builder.</p>
+                        <ul class="project-stack">
+                            <li>TypeScript</li>
+                            <li>WhatsApp API</li>
+                            <li>360dialog</li>
+                        </ul>
+                        <div class="project-links">
+                            <span class="project-soon">Private repository — demo on request</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-language"></i></span>
+                            <span class="project-tag tag-private">Private</span>
+                        </div>
+                        <h3>MasEra — Arabic-first Web Platform</h3>
+                        <p>An Arabic-first (RTL) marketing site on the Next.js App Router, with one route tree serving
+                            both Arabic and English through next-intl, typed local content, self-hosted Arabic
+                            typography and locale-detection routing.</p>
+                        <ul class="project-stack">
+                            <li>Next.js</li>
+                            <li>TypeScript</li>
+                            <li>Tailwind v4</li>
+                            <li>next-intl</li>
+                            <li>RTL</li>
+                        </ul>
+                        <div class="project-links">
+                            <span class="project-soon">Private repository — demo on request</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-microchip"></i></span>
+                            <span class="project-tag">Research</span>
+                        </div>
+                        <h3>Multithreading for AI Tasks</h3>
+                        <p>University research code exploring multithreading across image classification, object
+                            detection and data transmission — including a tensor-based implementation. Supervised by
+                            Dr Marwa O. Al Enany.</p>
+                        <ul class="project-stack">
+                            <li>Python</li>
+                            <li>Multithreading</li>
+                            <li>Computer Vision</li>
+                        </ul>
+                        <div class="project-links">
+                            <a href="https://github.com/shklala/Multithreading-" target="_blank" rel="noopener"><i
+                                    class="fab fa-github" aria-hidden="true"></i> Source</a>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-chalkboard-user"></i></span>
+                            <span class="project-tag tag-private">Private</span>
+                        </div>
+                        <h3>Training Dashboards</h3>
+                        <p>Trainer-facing dashboards for two programmes — Ta'heal LMS and the DEMI training hub —
+                            covering trainee progress, session tracking and programme administration.</p>
+                        <ul class="project-stack">
+                            <li>TypeScript</li>
+                            <li>React</li>
+                            <li>PostgreSQL</li>
+                        </ul>
+                        <div class="project-links">
+                            <span class="project-soon">Private repository — demo on request</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-top">
+                            <span class="project-icon" aria-hidden="true"><i class="fas fa-gamepad"></i></span>
+                            <span class="project-tag tag-live">Live</span>
+                        </div>
+                        <h3>This Portfolio</h3>
+                        <p>A hand-built, dependency-free portfolio with a retro-arcade layer — start screen, XP system,
+                            matrix transition and canvas starfield — served straight from GitHub Pages.</p>
+                        <ul class="project-stack">
+                            <li>HTML5</li>
+                            <li>CSS3</li>
+                            <li>Vanilla JS</li>
+                            <li>Canvas API</li>
+                        </ul>
+                        <div class="project-links">
+                            <a href="https://github.com/shklala/omar-m-fawzy-portfolio" target="_blank"
+                                rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> Source</a>
+                            <a href="https://shklala.github.io/omar-m-fawzy-portfolio/" target="_blank"
+                                rel="noopener"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                                Live</a>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills start-reveal" style="--start-delay:450ms" aria-labelledby="skillsTitle">
+            <div class="container">
+                <h2 class="section-title" id="skillsTitle">Skills &amp; Expertise</h2>
+                <div class="skills-grid">
+
+                    <div class="skill-category">
+                        <div class="skill-stars" aria-hidden="true"></div>
+                        <h3>Engineering</h3>
+                        <div class="skill-items">
+                            <div class="skill-item expert">
+                                <span class="skill-name">Python</span>
+                                <span class="skill-level">Expert</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">TypeScript</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">React &amp; Next.js</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">PostgreSQL &amp; RLS</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">HTML, CSS &amp; JavaScript</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h4>Phone</h4>
-                            <p><a href="tel:+201098434894">+201098434894</a></p>
+
+                    <div class="skill-category">
+                        <div class="skill-stars" aria-hidden="true"></div>
+                        <h3>AI &amp; Automation</h3>
+                        <div class="skill-items">
+                            <div class="skill-item advanced">
+                                <span class="skill-name">AI Product Integration</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">AI Error Analysis &amp; Stress Testing</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">Applied Mathematics for AI Training</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item working">
+                                <span class="skill-name">Workflow Automation</span>
+                                <span class="skill-level">Working</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>Location</h4>
-                            <p>Faisal, Giza, Cairo, Egypt</p>
+
+                    <div class="skill-category">
+                        <div class="skill-stars" aria-hidden="true"></div>
+                        <h3>IT &amp; Operations</h3>
+                        <div class="skill-items">
+                            <div class="skill-item advanced">
+                                <span class="skill-name">IT Systems Administration</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">Help Desk &amp; Ticketing Ops</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">Software Deployment &amp; Licensing</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">Access Control &amp; Compliance</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <i class="fab fa-linkedin"></i>
-                        <div>
-                            <h4>LinkedIn</h4>
-                            <p><a href="https://www.linkedin.com/in/omarmfawzy/" target="_blank">omarmfawzy</a></p>
+
+                    <div class="skill-category">
+                        <div class="skill-stars" aria-hidden="true"></div>
+                        <h3>Education &amp; Leadership</h3>
+                        <div class="skill-items">
+                            <div class="skill-item expert">
+                                <span class="skill-name">K-12 Coding Education</span>
+                                <span class="skill-level">Expert</span>
+                            </div>
+                            <div class="skill-item expert">
+                                <span class="skill-name">Mentorship &amp; Team Coaching</span>
+                                <span class="skill-level">Expert</span>
+                            </div>
+                            <div class="skill-item expert">
+                                <span class="skill-name">Student Assessment &amp; Feedback</span>
+                                <span class="skill-level">Expert</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">Curriculum &amp; Session Design</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                            <div class="skill-item advanced">
+                                <span class="skill-name">Educational Leadership</span>
+                                <span class="skill-level">Advanced</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="education start-reveal" style="--start-delay:550ms" aria-labelledby="eduTitle">
+            <div class="container">
+                <h2 class="section-title" id="eduTitle">Education &amp; Credentials</h2>
+                <div class="education-content">
+                    <div class="education-item">
+                        <div class="education-header">
+                            <h3>Bachelor's Degree in Computer Science</h3>
+                            <span class="institution">Culture and Science City</span>
+                            <span class="period">2019 — Dec 2023</span>
+                        </div>
+                        <div class="education-description">
+                            <ul>
+                                <li>Built a strong foundation in data structures, algorithms and object-oriented
+                                    programming</li>
+                                <li>Focused on Python development and its practical applications</li>
+                                <li>Collaborated on group software engineering projects</li>
+                                <li>Followed up with applied work supporting AI robustness through mathematics-focused
+                                    error analysis</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" action="https://formspree.io/f/xpwlezjg" method="POST" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+                <div class="languages-section">
+                    <h3>Certifications</h3>
+                    <div class="language-items">
+                        <div class="language-item">
+                            <span class="language-name">EF SET English Certificate</span>
+                            <span class="language-level">62/100 — C1 Advanced</span>
+                        </div>
+                        <div class="language-item">
+                            <span class="language-name">Educational Certificate: K-12 (Ed.)</span>
+                            <span class="language-level">Certified</span>
+                        </div>
+                        <div class="language-item">
+                            <span class="language-name">Vibe Coding</span>
+                            <span class="language-level">Certified</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                </div>
+
+                <div class="languages-section">
+                    <h3>Languages</h3>
+                    <div class="language-items">
+                        <div class="language-item">
+                            <span class="language-name">Arabic</span>
+                            <span class="language-level">Native</span>
+                        </div>
+                        <div class="language-item">
+                            <span class="language-name">English</span>
+                            <span class="language-level">C1 Advanced</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact start-reveal" style="--start-delay:650ms" aria-labelledby="contactTitle">
+            <div class="container">
+                <h2 class="section-title" id="contactTitle">Get In Touch</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p><a href="mailto:omar55138@gmail.com">omar55138@gmail.com</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone" aria-hidden="true"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p><a href="tel:+201098434894">+20 109 843 4894</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                            <div>
+                                <h4>Location</h4>
+                                <p>Faisal, Giza — Cairo, Egypt</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                            <div>
+                                <h4>LinkedIn</h4>
+                                <p><a href="https://www.linkedin.com/in/omarmfawzy/" target="_blank"
+                                        rel="noopener">omarmfawzy</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                            <div>
+                                <h4>GitHub</h4>
+                                <p><a href="https://github.com/shklala" target="_blank" rel="noopener">shklala</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" action="https://formspree.io/f/xpwlezjg" method="POST" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" autocomplete="name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" placeholder="Your Email" autocomplete="email"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" placeholder="Your Message" rows="5"
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2024 Omar M. Fawzy. All rights reserved.</p>
+                <p>&copy; <span id="footerYear">2026</span> Omar M. Fawzy. All rights reserved.</p>
                 <div class="footer-links">
-                    <a href="https://www.linkedin.com/in/omarmfawzy/" target="_blank">
-                        <i class="fab fa-linkedin"></i>
+                    <a href="https://www.linkedin.com/in/omarmfawzy/" target="_blank" rel="noopener"
+                        aria-label="LinkedIn profile">
+                        <i class="fab fa-linkedin" aria-hidden="true"></i>
                     </a>
-                    <a href="mailto:omar55138@gmail.com">
-                        <i class="fas fa-envelope"></i>
+                    <a href="https://github.com/shklala" target="_blank" rel="noopener" aria-label="GitHub profile">
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                    <a href="mailto:omar55138@gmail.com" aria-label="Send an email">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
@@ -507,32 +951,34 @@
     </footer>
 
     <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
+    <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     <!-- Progress Bar -->
-    <div class="progress-bar" id="progressBar"></div>
+    <div class="progress-bar" id="progressBar" role="presentation"></div>
 
     <!-- Gamification HUD -->
-    <div class="gamification-hud" id="gameHud">
+    <div class="gamification-hud" id="gameHud" aria-hidden="true">
         <div class="hud-chip" id="coinChip"><i class="fas fa-coins"></i><span id="coinCount">0</span></div>
         <div class="hud-chip" id="streakChip"><i class="fas fa-fire"></i><span id="streakCount">0</span></div>
     </div>
-    <div class="xp-toast" id="xpToast">+50 XP</div>
+    <div class="xp-toast" id="xpToast" role="status" aria-live="polite">+50 XP</div>
 
     <!-- Start Screen Overlay -->
-    <div id="startScreen" class="start-screen" aria-hidden="false">
+    <div id="startScreen" class="start-screen">
         <div class="start-inner">
             <div class="start-logo">OMF</div>
-            <div class="start-prompt">PRESS ANY KEY TO START</div>
-            <div class="start-hint">or click/tap</div>
+            <button type="button" class="start-prompt" id="startButton">PRESS ANY KEY TO START</button>
+            <div class="start-hint">or click / tap anywhere</div>
+            <button type="button" class="start-skip" id="startSkip">Skip intro</button>
         </div>
     </div>
+
     <!-- Matrix transition canvas -->
     <canvas id="matrixRain" class="matrix-rain" aria-hidden="true"></canvas>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 
 </html>

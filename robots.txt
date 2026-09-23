@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shklala.github.io/omar-m-fawzy-portfolio/sitemap.xml

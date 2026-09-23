@@ -1,91 +1,80 @@
-# Omar M. Fawzy - Personal Portfolio
+# Omar M. Fawzy — Portfolio
 
-A modern, interactive portfolio website showcasing my professional experience as an IT & Systems Administrator, Help Desk Lead, and Software Control Specialist.
+Personal portfolio site. **Live:** <https://shklala.github.io/omar-m-fawzy-portfolio/>
 
-## 🚀 Features
+Education Mentor & Product Specialist at iSchool New Cairo, and IT & Systems Administrator /
+Help Desk Lead / Software Control Specialist at Holol PMS UAE.
 
-- **Responsive Design** - Works perfectly on all devices
-- **Interactive Animations** - Smooth scroll effects and transitions
-- **Gaming Theme** - Retro gaming aesthetic with neon effects
-- **Dark Mode** - Easy on the eyes with modern UI
-- **Performance Optimized** - Fast loading with optimized assets
+No build step, no framework, no dependencies — three files and a folder of assets, served
+straight from GitHub Pages.
 
-## 🛠️ Technologies Used
+## Features
 
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling with animations
-- **JavaScript** - Interactive functionality
-- **Font Awesome** - Icon library
-- **Google Fonts** - Typography (Inter & Press Start 2P)
+- **Retro-arcade layer** — start screen, XP/level HUD, coins & streaks, matrix-rain transition,
+  canvas starfield, typewriter reveals
+- **Responsive** — single-column from 768px down, no horizontal scroll
+- **Accessible** — skip link, visible focus rings, labelled controls, keyboard-operable start
+  screen, pinch-zoom enabled, full `prefers-reduced-motion` support (the intro is skipped
+  entirely and all ambient animation is disabled)
+- **Fast** — WebP profile image with JPEG fallback (14 KB, down from a 4.9 MB PNG), non-blocking
+  icon font, one rAF-throttled scroll handler instead of four listeners, ambient canvases
+  disabled on small screens and hidden tabs
+- **Discoverable** — Open Graph and Twitter cards, canonical URL, `Person` JSON-LD structured
+  data, sitemap and robots.txt
 
-## 📁 Project Structure
+## Project structure
 
 ```
-PROT/
-├── index.html          # Main HTML file
-├── styles.css          # CSS styles and animations
-├── script.js           # JavaScript functionality
-├── omf.svg            # Favicon and logo
-├── 3.png              # Profile image
-├── .gitignore         # Git ignore rules
-└── README.md          # Project documentation
+.
+├── index.html            # All page content
+├── styles.css            # Base styles, then an appended "ENHANCEMENTS" block
+├── script.js             # One IIFE, sectioned and commented
+├── omf.svg               # Favicon / logo
+├── site.webmanifest      # PWA manifest
+├── robots.txt
+├── sitemap.xml
+└── assets/
+    ├── profile-320.webp  # Responsive profile image (320 / 480 / 640)
+    ├── profile-480.jpg   # JPEG fallback
+    ├── og-card.jpg       # 1200×630 social share card
+    ├── apple-touch-icon.png
+    └── Omar-Mohamed-Fawzy-Resume.pdf
 ```
 
-## 🎮 Gaming Features
+## Running locally
 
-- **XP System** - Gamified experience tracking
-- **Achievement Badges** - Professional skill indicators
-- **Interactive HUD** - Gaming-style interface elements
-- **Matrix Rain Effect** - Cyberpunk aesthetic
-- **Shooting Stars** - Dynamic background animations
+```bash
+git clone https://github.com/shklala/omar-m-fawzy-portfolio.git
+cd omar-m-fawzy-portfolio
 
-## 🚀 Getting Started
+python -m http.server 8000    # then open http://localhost:8000
+# or
+npx serve .
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/portfolio.git
-   ```
+Opening `index.html` directly from the filesystem works too, but a local server is closer to
+what GitHub Pages actually does.
 
-2. Open `index.html` in your web browser
+## Updating the content
 
-3. Or serve locally using a local server:
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   ```
+| What | Where |
+| --- | --- |
+| Experience entries | `.timeline` in `index.html` |
+| Projects | `.projects-grid` in `index.html` — placeholder cards carry inline instructions |
+| Skills and levels | `.skills-grid`; levels are the `expert` / `advanced` / `working` classes |
+| Resume PDF | replace `assets/Omar-Mohamed-Fawzy-Resume.pdf` |
+| Colors and spacing | the `ENHANCEMENTS` block at the bottom of `styles.css` |
+| Contact form endpoint | the `action` on `#contactForm` (currently Formspree) |
 
-## 📱 Responsive Design
+The footer year updates itself. If you change the profile photo, regenerate the responsive
+sizes rather than dropping in a full-resolution file.
 
-The portfolio is fully responsive and optimized for:
-- Desktop computers
-- Tablets
-- Mobile phones
-- All modern browsers
+## License
 
-## 🎨 Customization
+MIT — see [LICENSE](LICENSE).
 
-- **Colors**: Modify CSS variables in `styles.css`
-- **Content**: Update information in `index.html`
-- **Animations**: Adjust timing in `script.js`
-- **Theme**: Switch between light/dark modes
+## Contact
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📞 Contact
-
-- **Email**: omar55138@gmail.com
-- **LinkedIn**: [omarmfawzy](https://www.linkedin.com/in/omarmfawzy/)
-- **Phone**: +201098434894
-
----
-
-**Built with ❤️ by Omar M. Fawzy**
+- **Email:** omar55138@gmail.com
+- **LinkedIn:** [omarmfawzy](https://www.linkedin.com/in/omarmfawzy/)
+- **GitHub:** [shklala](https://github.com/shklala)
