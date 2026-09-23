@@ -40,7 +40,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=12">
+    <link rel="stylesheet" href="styles.css?v=22">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap"
         rel="stylesheet">
@@ -140,6 +140,7 @@
         <!-- Hero Section -->
         <section id="home" class="hero start-reveal" style="--start-delay:150ms" aria-labelledby="heroTitle">
             <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="grid-floor" aria-hidden="true"></div>
             <div class="hero-container">
                 <div class="hero-content">
                     <h1 class="hero-title neon" id="heroTitle" data-type-on-start="true">Omar M. Fawzy</h1>
@@ -1012,10 +1013,54 @@
         </div>
     </div>
 
+    <!-- Guide bot -->
+    <div class="guide" id="guide" hidden>
+        <div class="guide-bubble" id="guideBubble" role="status" aria-live="polite">
+            <p class="guide-text" id="guideText"></p>
+            <div class="guide-actions">
+                <button type="button" class="guide-btn" id="guideTour">Take the tour</button>
+                <button type="button" class="guide-btn guide-btn-quiet" id="guideClose">Hide</button>
+            </div>
+        </div>
+
+        <button type="button" class="guide-bot" id="guideBot" aria-label="Portfolio guide. Show or hide the tip">
+            <span class="portal" aria-hidden="true"></span>
+            <span class="portal-sparks" aria-hidden="true"></span>
+            <svg viewBox="0 0 80 88" width="72" height="79" aria-hidden="true" focusable="false">
+                <!-- antenna -->
+                <line x1="40" y1="14" x2="40" y2="4" stroke="#7c5cff" stroke-width="3" stroke-linecap="round" />
+                <circle class="bot-lamp" cx="40" cy="4" r="4.5" fill="#a5b4fc" />
+                <!-- head -->
+                <rect x="10" y="12" width="60" height="46" rx="16" fill="#151d33" stroke="#7c5cff"
+                    stroke-width="2.5" />
+                <!-- visor -->
+                <rect x="17" y="21" width="46" height="28" rx="12" fill="#0a1020" />
+                <!-- eyes -->
+                <g class="bot-eyes">
+                    <circle cx="31" cy="35" r="7.5" fill="#12203d" />
+                    <circle class="bot-pupil" cx="31" cy="35" r="3.6" fill="#7dd3fc" />
+                    <circle cx="49" cy="35" r="7.5" fill="#12203d" />
+                    <circle class="bot-pupil" cx="49" cy="35" r="3.6" fill="#7dd3fc" />
+                </g>
+                <!-- body -->
+                <rect x="20" y="60" width="40" height="20" rx="9" fill="#151d33" stroke="#7c5cff"
+                    stroke-width="2.5" />
+                <rect x="30" y="67" width="20" height="5" rx="2.5" fill="#7c5cff" opacity="0.8" />
+                <!-- arms -->
+                <rect x="4" y="62" width="12" height="5" rx="2.5" fill="#7c5cff" opacity="0.7" />
+                <rect x="64" y="62" width="12" height="5" rx="2.5" fill="#7c5cff" opacity="0.7" />
+            </svg>
+        </button>
+    </div>
+
+    <button type="button" class="guide-recall" id="guideRecall" hidden aria-label="Show the portfolio guide">
+        <i class="fas fa-robot" aria-hidden="true"></i>
+    </button>
+
     <!-- Matrix transition canvas -->
     <canvas id="matrixRain" class="matrix-rain" aria-hidden="true"></canvas>
 
-    <script src="script.js?v=12" defer></script>
+    <script src="script.js?v=22" defer></script>
 </body>
 
 </html>

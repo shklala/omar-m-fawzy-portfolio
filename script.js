@@ -19,6 +19,7 @@
      14. Progress ring, navbar auto-hide, hero fade
      15. Copy to clipboard
      16. Konami code
+     17. Guide bot (pointer-tracking companion, per-section tour)
    ========================================================================= */
 
 (function () {
@@ -546,15 +547,24 @@
     }
 
 
-    // --- Starfield background -------------------------------------------
+    // --- Starfield: true 3D perspective ----------------------------------
+    // Stars carry a z depth and are projected through a focal length rather
+    // than being drawn as flat parallax layers, so they genuinely fly past the
+    // viewer. Scrolling adds thrust, which stretches them into streaks.
     const starCanvas = $('#bgStars');
     if (starCanvas && allowAmbient()) {
         const ctx = starCanvas.getContext('2d');
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const FOCAL = 480;
+        const MAX_Z = 1400;
+        const COLORS = ['#93c5fd', '#a5b4fc', '#c7d2fe', '#e0e7ff'];
+
         let width = 0;
         let height = 0;
-        let layers = [[], [], []];
+        let stars = [];
         let running = true;
+        let thrust = 0;
+        let lastScrollY = window.scrollY;
 
         function resize() {
             width = window.innerWidth;
@@ -567,20 +577,15 @@
         }
 
         function spawnStars() {
-            const make = (divisor, floor, rBase, rSpread) => Array.from(
-                { length: Math.max(floor, Math.floor((width * height) / divisor)) },
-                () => ({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    r: Math.random() * rSpread + rBase,
-                    tw: Math.random()
-                })
-            );
-            layers = [
-                make(9000, 80, 0.2, 0.8),
-                make(14000, 50, 0.4, 1.2),
-                make(22000, 30, 0.6, 1.6)
-            ];
+            const count = Math.max(150, Math.min(420, Math.floor((width * height) / 4200)));
+            const spread = Math.max(width, height) * 1.25;
+            stars = Array.from({ length: count }, () => ({
+                x: (Math.random() - 0.5) * spread,
+                y: (Math.random() - 0.5) * spread,
+                z: Math.random() * MAX_Z + 1,
+                c: COLORS[Math.floor(Math.random() * COLORS.length)],
+                tw: Math.random() * 6.28
+            }));
         }
 
         resize();
@@ -592,7 +597,12 @@
             resizeTimer = setTimeout(() => { resize(); spawnStars(); }, 200);
         }, { passive: true });
 
-        // Stop drawing entirely when the tab is hidden or motion is disabled.
+        // Scrolling pushes the field forward, then it eases back to a drift.
+        scrollFrameHooks.push((y) => {
+            thrust = Math.min(900, Math.abs(y - lastScrollY) * 14);
+            lastScrollY = y;
+        });
+
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 running = false;
@@ -603,8 +613,6 @@
             }
         });
 
-        const PARALLAX = [0.15, 0.3, 0.45];
-        const COLORS = ['#93c5fd', '#a5b4fc', '#c7d2fe'];
         let t = 0;
         let last = performance.now();
 
@@ -613,21 +621,56 @@
             const dt = Math.min(0.05, (now - last) / 1000);
             last = now;
             t += dt;
+            thrust *= 0.92;
 
             ctx.clearRect(0, 0, width, height);
-            const scrollY = window.scrollY || 0;
+            const cx = width / 2;
+            const cy = height / 2;
+            const speed = (60 + thrust) * dt;
 
-            for (let i = 0; i < layers.length; i++) {
-                ctx.fillStyle = COLORS[i];
-                for (const s of layers[i]) {
-                    const y = s.y + scrollY * PARALLAX[i];
-                    const twinkle = 0.5 + 0.5 * Math.sin(t * (1.5 + i * 0.5) + s.tw * 6.28);
-                    ctx.globalAlpha = 0.2 + twinkle * 0.8;
+            for (let i = 0; i < stars.length; i++) {
+                const s = stars[i];
+                const prevZ = s.z;
+                s.z -= speed;
+
+                if (s.z < 1) {
+                    // Recycle to the far plane with a fresh position.
+                    const spread = Math.max(width, height) * 1.25;
+                    s.x = (Math.random() - 0.5) * spread;
+                    s.y = (Math.random() - 0.5) * spread;
+                    s.z = MAX_Z;
+                    continue;
+                }
+
+                const k = FOCAL / s.z;
+                const sx = cx + s.x * k;
+                const sy = cy + s.y * k;
+                if (sx < -40 || sx > width + 40 || sy < -40 || sy > height + 40) continue;
+
+                const depth = 1 - s.z / MAX_Z;
+                const twinkle = 0.75 + 0.25 * Math.sin(t * 2 + s.tw);
+                const r = Math.max(0.25, depth * 2.1);
+
+                ctx.fillStyle = s.c;
+                ctx.globalAlpha = Math.min(1, depth * 1.3) * twinkle;
+
+                // Under thrust the star smears between its old and new position.
+                if (thrust > 120) {
+                    const pk = FOCAL / prevZ;
+                    ctx.strokeStyle = s.c;
+                    ctx.lineWidth = r;
+                    ctx.lineCap = 'round';
                     ctx.beginPath();
-                    ctx.arc(s.x, y % (height + 5), s.r + i * 0.2, 0, Math.PI * 2);
+                    ctx.moveTo(cx + s.x * pk, cy + s.y * pk);
+                    ctx.lineTo(sx, sy);
+                    ctx.stroke();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, r, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
+
             ctx.globalAlpha = 1;
             requestAnimationFrame(draw);
         }
@@ -845,7 +888,9 @@
             });
         };
 
-        spotlightTargets.forEach((el) => track(el, el.classList.contains('project-card')));
+        // Cards and stat tiles tilt; the rest only take the spotlight.
+        spotlightTargets.forEach((el) => track(el,
+            el.classList.contains('project-card') || el.classList.contains('stat')));
 
         const profileCard = $('.profile-card');
         if (profileCard) track(profileCard, true);
@@ -1107,6 +1152,7 @@
 
     /* ---------------------------------------------------------------------
        16. Konami code
+     17. Guide bot (pointer-tracking companion, per-section tour)
        The page already keeps a level and an XP bar, so the classic cheat
        code granting a level felt like the honest payoff.
        ------------------------------------------------------------------ */
@@ -1166,6 +1212,315 @@
                 ], { duration: 1400 + Math.random() * 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
                 anim.onfinish = () => bit.remove();
             }
+        }
+    })();
+
+
+    /* ---------------------------------------------------------------------
+       17. Guide bot
+       A companion that watches the pointer and explains whichever section is
+       on screen, plus a self-driving tour. Its state is remembered per
+       visitor, and it is skipped entirely when motion is reduced to a
+       still bubble rather than removed, since the explanations are content.
+       ------------------------------------------------------------------ */
+    (function guideBot() {
+        const guide = $('#guide');
+        const bot = $('#guideBot');
+        const bubble = $('#guideBubble');
+        const textEl = $('#guideText');
+        const tourBtn = $('#guideTour');
+        const closeBtn = $('#guideClose');
+        const recall = $('#guideRecall');
+        if (!guide || !bot || !textEl) return;
+
+        const SCRIPT = {
+            home: 'Hi, I am <b>Pixel</b>. I will explain what you are looking at as you scroll. This is the hero: Omar’s current role, and the resume download.',
+            about: '<b>About.</b> The short version of who Omar is, and the numbers behind it: 3,800+ applications audited, 1,300+ stages reconstructed, 1,500+ sessions delivered.',
+            experience: '<b>Experience.</b> A timeline of every role. The rail fills as you scroll and the glowing marker follows whichever entry you are reading.',
+            projects: '<b>Selected Work.</b> Twelve products Omar owned end to end. Use the filters for live demos, private internal platforms, or research, and hover a card to tilt it.',
+            skills: '<b>Skills.</b> Grouped into product, engineering, automation and AI, and EdTech. The bar under each one shows the level: expert, advanced or working.',
+            education: '<b>Education.</b> The Computer Science degree, certifications including Cambridge C2, and languages.',
+            contact: '<b>Contact.</b> Email and phone both have copy buttons, and the form sends without navigating you off the page.'
+        };
+
+        const STORAGE_KEY = 'omf-guide-dismissed';
+        let dismissed = false;
+        try { dismissed = localStorage.getItem(STORAGE_KEY) === '1'; } catch (e) { /* private mode */ }
+
+        let currentKey = null;
+        let typeTimer = null;
+        let touring = false;
+
+        function setText(html) {
+            clearInterval(typeTimer);
+            if (reduceMotion) { textEl.innerHTML = html; return; }
+
+            // Type the visible characters while leaving any markup intact.
+            const parts = html.split(/(<[^>]+>)/);
+            let partIndex = 0;
+            let charIndex = 0;
+            textEl.innerHTML = '';
+            let built = '';
+
+            typeTimer = setInterval(() => {
+                if (partIndex >= parts.length) { clearInterval(typeTimer); return; }
+                const part = parts[partIndex];
+                if (part.startsWith('<')) {
+                    built += part;
+                    partIndex++;
+                } else {
+                    built += part.charAt(charIndex++);
+                    if (charIndex >= part.length) { partIndex++; charIndex = 0; }
+                }
+                textEl.innerHTML = built;
+            }, 14);
+        }
+
+        // The bubble folds away on its own so it never sits on top of a card
+        // for longer than it takes to read. Clicking the bot brings it back.
+        let collapseTimer = null;
+
+        function scheduleCollapse() {
+            clearTimeout(collapseTimer);
+            if (touring) return;
+            collapseTimer = setTimeout(() => {
+                if (!touring) guide.classList.remove('open');
+            }, 7000);
+        }
+
+        function show(key) {
+            if (dismissed || key === currentKey || !SCRIPT[key]) return;
+            currentKey = key;
+            guide.classList.add('open');
+
+            const speak = () => { setText(SCRIPT[key]); scheduleCollapse(); };
+
+            if (travelAllowed() && ANCHORS[key] && key !== anchorKey) {
+                // Speak once the bot has stepped out of the far portal.
+                teleportTo(key);
+                setTimeout(speak, 500);
+            } else {
+                speak();
+            }
+        }
+
+        function open() {
+            dismissed = false;
+            try { localStorage.setItem(STORAGE_KEY, '0'); } catch (e) { /* ignore */ }
+            guide.hidden = false;
+            recall.hidden = true;
+            guide.classList.add('open');
+            if (!currentKey) show('home');
+        }
+
+        function hide() {
+            dismissed = true;
+            touring = false;
+            clearInterval(typeTimer);
+            try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignore */ }
+            guide.classList.remove('open');
+            guide.hidden = true;
+            recall.hidden = false;
+        }
+
+        // --- Portal travel ---------------------------------------------------
+        // Each section has a landing spot. The right-hand ones sit mid-height
+        // so the bot never lands on the HUD chips or the back-to-top button.
+        const ANCHORS = {
+            home: { x: 'left', y: 'bottom' },
+            about: { x: 'right', y: 'mid' },
+            experience: { x: 'left', y: 'mid' },
+            projects: { x: 'right', y: 'mid' },
+            skills: { x: 'left', y: 'bottom' },
+            education: { x: 'right', y: 'mid' },
+            contact: { x: 'left', y: 'bottom' }
+        };
+
+        const MARGIN = 24;
+        let anchorKey = 'home';
+        let porting = false;
+        let pendingKey = null;
+
+        const travelAllowed = () => !reduceMotion && window.innerWidth > 768;
+
+        function applyAnchor(key) {
+            const a = ANCHORS[key];
+            if (!a || window.innerWidth <= 768) return;
+            anchorKey = key;
+
+            guide.classList.toggle('at-right', a.x === 'right');
+
+            // Measure after the side swap so the bubble is on the correct side.
+            const box = guide.getBoundingClientRect();
+            const left = a.x === 'left'
+                ? MARGIN
+                : Math.max(MARGIN, window.innerWidth - box.width - MARGIN);
+            const top = a.y === 'bottom'
+                ? window.innerHeight - box.height - MARGIN
+                : Math.max(MARGIN, (window.innerHeight - box.height) / 2);
+
+            guide.style.setProperty('--gl', left + 'px');
+            guide.style.setProperty('--gt', top + 'px');
+            guide.style.setProperty('--gb', 'auto');
+        }
+
+        function teleportTo(key) {
+            if (!ANCHORS[key] || key === anchorKey) return;
+            if (!travelAllowed()) { applyAnchor(key); return; }
+
+            // Scrolling quickly can request a jump mid-jump. Remember the most
+            // recent destination instead of dropping it, or the bot strands
+            // itself at whichever section it happened to be mid-flight for.
+            if (porting) { pendingKey = key; return; }
+
+            porting = true;
+            guide.classList.add('porting');
+
+            // Move only once the bot has disappeared into the portal.
+            setTimeout(() => {
+                applyAnchor(key);
+                guide.classList.remove('porting');
+                guide.classList.add('arriving');
+                setTimeout(() => {
+                    guide.classList.remove('arriving');
+                    porting = false;
+                    if (pendingKey && pendingKey !== anchorKey) {
+                        const next = pendingKey;
+                        pendingKey = null;
+                        teleportTo(next);
+                    } else {
+                        pendingKey = null;
+                    }
+                }, 540);
+            }, 430);
+        }
+
+        window.addEventListener('resize', () => applyAnchor(anchorKey), { passive: true });
+
+        // --- Pointer tracking: pupils and a slight lean ---------------------
+        const pupils = $$('.bot-pupil', bot);
+        const botSvg = $('svg', bot);
+        if (!coarsePointer && !reduceMotion) {
+            let queued = false;
+            let px = 0;
+            let py = 0;
+
+            const applyGaze = () => {
+                queued = false;
+                const r = bot.getBoundingClientRect();
+                const cx = r.left + r.width / 2;
+                const cy = r.top + r.height * 0.38;
+                const dx = px - cx;
+                const dy = py - cy;
+                const dist = Math.hypot(dx, dy) || 1;
+                const reach = Math.min(1, dist / 260);
+                const ox = (dx / dist) * 3.2 * reach;
+                const oy = (dy / dist) * 2.6 * reach;
+                pupils.forEach((p) => {
+                    p.style.transform = 'translate(' + ox.toFixed(2) + 'px,' + oy.toFixed(2) + 'px)';
+                });
+                // The button itself carries the bob animation, so the lean goes
+                // on the SVG to avoid two transforms fighting over one element.
+                if (botSvg) {
+                    botSvg.style.transform = 'rotate(' + ((dx / dist) * 5 * reach).toFixed(2) + 'deg)';
+                }
+            };
+
+            document.addEventListener('pointermove', (e) => {
+                if (e.pointerType === 'touch') return;
+                px = e.clientX;
+                py = e.clientY;
+                if (!queued) { queued = true; requestAnimationFrame(applyGaze); }
+            }, { passive: true });
+        }
+
+        // --- Follow the section in view -------------------------------------
+        const sections = $$('main section');
+        const seen = new Map();
+
+        const guideObserver = new IntersectionObserver((entries) => {
+            entries.forEach((e) => seen.set(e.target.id, e.intersectionRatio));
+            if (touring || dismissed) return;
+            let best = null;
+            let bestRatio = 0;
+            seen.forEach((ratio, id) => {
+                if (ratio > bestRatio) { bestRatio = ratio; best = id; }
+            });
+            if (best && bestRatio > 0.25) show(best);
+        }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+
+        sections.forEach((s) => guideObserver.observe(s));
+
+        // --- The tour --------------------------------------------------------
+        const ORDER = ['home', 'about', 'experience', 'projects', 'skills', 'education', 'contact'];
+
+        function runTour() {
+            if (touring) { stopTour(); return; }
+            touring = true;
+            tourBtn.textContent = 'Stop tour';
+            let i = 0;
+
+            const step = () => {
+                if (!touring) return;
+                if (i >= ORDER.length) { stopTour(); return; }
+                const id = ORDER[i++];
+                const target = document.getElementById(id);
+                if (!target) { step(); return; }
+
+                document.querySelectorAll('.guide-spotlight')
+                    .forEach((el) => el.classList.remove('guide-spotlight'));
+                target.classList.add('guide-spotlight');
+                target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+
+                currentKey = null;
+                show(id);
+                setTimeout(step, 5200);
+            };
+
+            step();
+        }
+
+        function stopTour() {
+            touring = false;
+            tourBtn.textContent = 'Take the tour';
+            document.querySelectorAll('.guide-spotlight')
+                .forEach((el) => el.classList.remove('guide-spotlight'));
+        }
+
+        tourBtn.addEventListener('click', runTour);
+        closeBtn.addEventListener('click', hide);
+        recall.addEventListener('click', open);
+        bot.addEventListener('click', () => {
+            guide.classList.toggle('open');
+            if (guide.classList.contains('open')) {
+                if (!currentKey) show('home');
+                else scheduleCollapse();
+            } else {
+                clearTimeout(collapseTimer);
+            }
+        });
+
+        // Hovering the bubble keeps it open while it is being read.
+        bubble.addEventListener('pointerenter', () => clearTimeout(collapseTimer));
+        bubble.addEventListener('pointerleave', scheduleCollapse);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && touring) stopTour();
+        });
+
+        // Appear once the visitor is actually in the page.
+        const start = () => {
+            if (dismissed) { guide.hidden = true; recall.hidden = false; return; }
+            guide.hidden = false;
+            applyAnchor('home');
+            setTimeout(() => { guide.classList.add('open'); show('home'); }, 900);
+        };
+
+        if (document.body.classList.contains('started')) start();
+        else {
+            const wait = setInterval(() => {
+                if (document.body.classList.contains('started')) { clearInterval(wait); start(); }
+            }, 250);
         }
     })();
 
