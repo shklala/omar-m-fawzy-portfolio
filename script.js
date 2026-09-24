@@ -135,7 +135,7 @@
 
         if (navbar) {
             const scrolled = y > 100;
-            navbar.style.background = scrolled ? 'rgba(7, 11, 22, 0.92)' : 'rgba(7, 11, 22, 0.6)';
+            navbar.style.background = scrolled ? 'rgba(5, 7, 15, 0.94)' : 'rgba(5, 7, 15, 0.72)';
             navbar.style.boxShadow = scrolled ? '0 6px 24px rgba(0, 0, 0, 0.35)' : 'none';
         }
 
@@ -847,7 +847,7 @@
 
     // --- Pointer spotlight and tilt ----------------------------------------
     if (!coarsePointer && !reduceMotion) {
-        const spotlightTargets = $$('.project-card, .skill-category, .timeline-content, .stat, .education-item');
+        const spotlightTargets = $$('.project-card, .profile-card');
         spotlightTargets.forEach((el) => el.classList.add('spotlight'));
 
         let pointerQueued = false;
@@ -888,12 +888,7 @@
             });
         };
 
-        // Cards and stat tiles tilt; the rest only take the spotlight.
-        spotlightTargets.forEach((el) => track(el,
-            el.classList.contains('project-card') || el.classList.contains('stat')));
-
-        const profileCard = $('.profile-card');
-        if (profileCard) track(profileCard, true);
+        spotlightTargets.forEach((el) => track(el, true));
     }
 
 
@@ -1330,8 +1325,8 @@
         // Each explanation names the thing it is about, and the bot aims its
         // arm at that element and outlines it, so "this" is unambiguous.
         const TARGETS = {
-            home: '.hero-buttons',
-            about: '.about-stats',
+            home: '.ledger',
+            about: '.about-text',
             experience: '.timeline',
             projects: '.project-filters',
             skills: '.skills-grid',
