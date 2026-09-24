@@ -40,7 +40,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=22">
+    <link rel="stylesheet" href="styles.css?v=31">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap"
         rel="stylesheet">
@@ -1026,29 +1026,84 @@
         <button type="button" class="guide-bot" id="guideBot" aria-label="Portfolio guide. Show or hide the tip">
             <span class="portal" aria-hidden="true"></span>
             <span class="portal-sparks" aria-hidden="true"></span>
-            <svg viewBox="0 0 80 88" width="72" height="79" aria-hidden="true" focusable="false">
+            <svg viewBox="0 0 120 124" width="84" height="87" aria-hidden="true" focusable="false">
+                <defs>
+                    <linearGradient id="botShell" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#3b4470" />
+                        <stop offset="45%" stop-color="#232c4d" />
+                        <stop offset="100%" stop-color="#141a30" />
+                    </linearGradient>
+                    <linearGradient id="botRim" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#a78bfa" />
+                        <stop offset="100%" stop-color="#38bdf8" />
+                    </linearGradient>
+                    <radialGradient id="visorGlow" cx="50%" cy="42%" r="62%">
+                        <stop offset="0%" stop-color="#123055" />
+                        <stop offset="100%" stop-color="#070d1c" />
+                    </radialGradient>
+                    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+
+                <!-- hover shadow -->
+                <ellipse class="bot-shadow" cx="60" cy="116" rx="26" ry="5" fill="#000" opacity="0.45" />
+
                 <!-- antenna -->
-                <line x1="40" y1="14" x2="40" y2="4" stroke="#7c5cff" stroke-width="3" stroke-linecap="round" />
-                <circle class="bot-lamp" cx="40" cy="4" r="4.5" fill="#a5b4fc" />
-                <!-- head -->
-                <rect x="10" y="12" width="60" height="46" rx="16" fill="#151d33" stroke="#7c5cff"
-                    stroke-width="2.5" />
+                <path d="M60 15 L60 7" stroke="url(#botRim)" stroke-width="3" stroke-linecap="round" />
+                <circle class="bot-lamp" cx="60" cy="5" r="5" fill="#a5b4fc" />
+
+                <!-- ears, on the head where ears belong -->
+                <rect x="21" y="32" width="8" height="18" rx="4" fill="url(#botShell)" stroke="url(#botRim)"
+                    stroke-width="1.6" />
+                <rect x="91" y="32" width="8" height="18" rx="4" fill="url(#botShell)" stroke="url(#botRim)"
+                    stroke-width="1.6" />
+
+                <!-- neck -->
+                <rect x="53" y="60" width="14" height="12" rx="5" fill="#1b2340" stroke="url(#botRim)"
+                    stroke-width="1.4" />
+
+                <!-- torso -->
+                <rect x="34" y="68" width="52" height="40" rx="16" fill="url(#botShell)" stroke="url(#botRim)"
+                    stroke-width="2.2" />
+                <rect x="41" y="73" width="38" height="9" rx="4.5" fill="url(#gloss)" />
+                <circle class="bot-core" cx="60" cy="92" r="6" fill="#38bdf8" />
+                <circle cx="60" cy="92" r="2.4" fill="#e0f2fe" />
+
+                <!-- arms, hinged at the torso shoulders -->
+                <g class="bot-arm bot-arm-right">
+                    <rect x="82" y="74" width="20" height="8" rx="4" fill="url(#botShell)" stroke="url(#botRim)"
+                        stroke-width="1.6" />
+                    <circle cx="104" cy="78" r="7" fill="url(#botShell)" stroke="url(#botRim)" stroke-width="1.6" />
+                    <path class="bot-finger" d="M112 72 L120 78 L112 84 Z" fill="#7dd3fc" />
+                </g>
+                <g class="bot-arm bot-arm-left">
+                    <rect x="18" y="74" width="20" height="8" rx="4" fill="url(#botShell)" stroke="url(#botRim)"
+                        stroke-width="1.6" />
+                    <circle cx="16" cy="78" r="7" fill="url(#botShell)" stroke="url(#botRim)" stroke-width="1.6" />
+                    <path class="bot-finger" d="M8 72 L0 78 L8 84 Z" fill="#7dd3fc" />
+                </g>
+
+                <!-- head, drawn over the neck and ear roots -->
+                <rect x="28" y="14" width="64" height="50" rx="20" fill="url(#botShell)" stroke="url(#botRim)"
+                    stroke-width="2.2" />
+                <rect x="35" y="19" width="50" height="16" rx="11" fill="url(#gloss)" />
+
                 <!-- visor -->
-                <rect x="17" y="21" width="46" height="28" rx="12" fill="#0a1020" />
+                <rect x="36" y="26" width="48" height="28" rx="13" fill="url(#visorGlow)" stroke="#5b6ba8"
+                    stroke-width="1.2" />
+                <rect class="bot-scan" x="36" y="29" width="48" height="3" fill="#38bdf8" opacity="0.28" />
+
                 <!-- eyes -->
                 <g class="bot-eyes">
-                    <circle cx="31" cy="35" r="7.5" fill="#12203d" />
-                    <circle class="bot-pupil" cx="31" cy="35" r="3.6" fill="#7dd3fc" />
-                    <circle cx="49" cy="35" r="7.5" fill="#12203d" />
-                    <circle class="bot-pupil" cx="49" cy="35" r="3.6" fill="#7dd3fc" />
+                    <ellipse cx="50" cy="40" rx="8" ry="8.5" fill="#0b1430" />
+                    <ellipse class="bot-pupil" cx="50" cy="40" rx="4.5" ry="5" fill="#7dd3fc" />
+                    <circle class="bot-spark" cx="48" cy="37.8" r="1.5" fill="#ffffff" opacity="0.9" />
+                    <ellipse cx="70" cy="40" rx="8" ry="8.5" fill="#0b1430" />
+                    <ellipse class="bot-pupil" cx="70" cy="40" rx="4.5" ry="5" fill="#7dd3fc" />
+                    <circle class="bot-spark" cx="68" cy="37.8" r="1.5" fill="#ffffff" opacity="0.9" />
                 </g>
-                <!-- body -->
-                <rect x="20" y="60" width="40" height="20" rx="9" fill="#151d33" stroke="#7c5cff"
-                    stroke-width="2.5" />
-                <rect x="30" y="67" width="20" height="5" rx="2.5" fill="#7c5cff" opacity="0.8" />
-                <!-- arms -->
-                <rect x="4" y="62" width="12" height="5" rx="2.5" fill="#7c5cff" opacity="0.7" />
-                <rect x="64" y="62" width="12" height="5" rx="2.5" fill="#7c5cff" opacity="0.7" />
             </svg>
         </button>
     </div>
@@ -1060,7 +1115,7 @@
     <!-- Matrix transition canvas -->
     <canvas id="matrixRain" class="matrix-rain" aria-hidden="true"></canvas>
 
-    <script src="script.js?v=22" defer></script>
+    <script src="script.js?v=31" defer></script>
 </body>
 
 </html>

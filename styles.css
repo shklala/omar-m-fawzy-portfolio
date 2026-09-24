@@ -3728,7 +3728,7 @@ html {
 /* Eyes blink on a loop; JS moves the pupils toward the pointer. */
 .bot-eyes {
     animation: bot-blink 5.5s infinite;
-    transform-origin: 40px 35px;
+    transform-origin: 60px 40px;
 }
 
 @keyframes bot-blink {
@@ -4148,5 +4148,255 @@ html {
     .guide.arriving .guide-bubble {
         opacity: 1;
         transform: none;
+    }
+}
+
+/* ==========================================================================
+   GUIDE PLACEMENT AND POLISH
+   The bot now lives in the page gutter, outside the 1200px content column, so
+   it cannot sit on top of text. The bubble stacks above it rather than beside
+   it, and folds away on its own.
+   ========================================================================== */
+
+.guide {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    left: var(--gl, 24px);
+    right: var(--gr, auto);
+    bottom: var(--gb, 24px);
+    top: auto;
+}
+
+.guide.at-right {
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Reset the horizontal ordering used by the earlier side-by-side layout. */
+.guide-bubble {
+    order: 0;
+    max-width: 268px;
+    transform-origin: 0 100%;
+    backdrop-filter: blur(3px);
+}
+
+.guide.at-right .guide-bubble {
+    transform-origin: 100% 100%;
+}
+
+/* Tail now points down at the bot instead of sideways. */
+.guide-bubble::after {
+    left: 26px;
+    right: auto;
+    top: auto;
+    bottom: -7px;
+    border-left: 1px solid rgba(124, 92, 255, 0.45);
+    border-bottom: 1px solid rgba(124, 92, 255, 0.45);
+    border-right: none;
+    border-top: none;
+    transform: rotate(-45deg);
+}
+
+.guide.at-right .guide-bubble::after {
+    left: auto;
+    right: 26px;
+    border-left: 1px solid rgba(124, 92, 255, 0.45);
+    border-bottom: 1px solid rgba(124, 92, 255, 0.45);
+    border-right: none;
+    border-top: none;
+}
+
+/* A quiet dot on the bot when it has something unread to say. */
+.guide-bot::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 2px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #fbbf24;
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.9);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.guide:not(.open) .guide-bot::after {
+    opacity: 1;
+    animation: tip-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes tip-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.85;
+    }
+
+    50% {
+        transform: scale(1.35);
+        opacity: 1;
+    }
+}
+
+/* --- Bot details ----------------------------------------------------------- */
+
+.bot-shadow {
+    animation: shadow-pulse 3.4s ease-in-out infinite;
+    transform-origin: 60px 116px;
+}
+
+@keyframes shadow-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.45;
+    }
+
+    50% {
+        transform: scale(0.82);
+        opacity: 0.28;
+    }
+}
+
+.bot-scan {
+    animation: bot-scan 3.6s ease-in-out infinite;
+}
+
+@keyframes bot-scan {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.1;
+    }
+
+    50% {
+        transform: translateY(23px);
+        opacity: 0.4;
+    }
+}
+
+.bot-core {
+    animation: core-glow 2.6s ease-in-out infinite;
+    transform-origin: 60px 92px;
+}
+
+@keyframes core-glow {
+
+    0%,
+    100% {
+        opacity: 0.75;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.12);
+    }
+}
+
+.bot-eyes {
+    transform-origin: 60px 40px;
+}
+
+@media (max-width: 900px) {
+
+    /* Not enough gutter to stand in: go back to the corner. */
+    .guide {
+        left: 12px;
+        right: 12px;
+        bottom: 14px;
+        align-items: flex-start;
+    }
+
+    .guide.at-right {
+        align-items: flex-start;
+    }
+
+    .guide-bubble {
+        max-width: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .bot-shadow,
+    .bot-scan,
+    .bot-core,
+    .guide:not(.open) .guide-bot::after {
+        animation: none;
+    }
+}
+
+/* --- Pointing arm ---------------------------------------------------------- */
+
+.bot-arm {
+    transform-box: view-box;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+/* Each arm hinges at its own shoulder, on the side of the chassis. */
+.bot-arm-right {
+    transform-origin: 84px 78px;
+    transform: rotate(38deg);
+}
+
+/* The left arm is drawn aiming -x, so its rotations mirror the right one's:
+   a positive angle would swing it up into the air instead of down to its side. */
+.bot-arm-left {
+    transform-origin: 36px 78px;
+    transform: rotate(-38deg);
+}
+
+/* Both arms stay on, or the bot looks dismembered. The idle one rests at its
+   side while the other reaches toward whatever is being explained. */
+.bot-arm {
+    opacity: 1;
+}
+
+.bot-arm .bot-finger {
+    opacity: 0.55;
+    transition: opacity 0.3s ease;
+}
+
+.bot-arm.aiming .bot-finger {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(125, 211, 252, 0.95));
+}
+
+/* The thing being pointed at gets a matching outline. */
+.guide-pointing {
+    position: relative;
+    outline: 2px dashed rgba(125, 211, 252, 0.75);
+    outline-offset: 6px;
+    border-radius: 10px;
+    animation: pointed-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes pointed-glow {
+
+    0%,
+    100% {
+        outline-color: rgba(125, 211, 252, 0.35);
+    }
+
+    50% {
+        outline-color: rgba(125, 211, 252, 0.9);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .bot-arm {
+        transition: none;
+    }
+
+    .guide-pointing {
+        animation: none;
+        outline-color: rgba(125, 211, 252, 0.7);
     }
 }

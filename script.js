@@ -1284,8 +1284,10 @@
             clearTimeout(collapseTimer);
             if (touring) return;
             collapseTimer = setTimeout(() => {
-                if (!touring) guide.classList.remove('open');
-            }, 7000);
+                if (touring) return;
+                guide.classList.remove('open');
+                stopPointing();
+            }, 5200);
         }
 
         function show(key) {
@@ -1293,7 +1295,7 @@
             currentKey = key;
             guide.classList.add('open');
 
-            const speak = () => { setText(SCRIPT[key]); scheduleCollapse(); };
+            const speak = () => { setText(SCRIPT[key]); pointAt(key); scheduleCollapse(); };
 
             if (travelAllowed() && ANCHORS[key] && key !== anchorKey) {
                 // Speak once the bot has stepped out of the far portal.
@@ -1321,7 +1323,99 @@
             guide.classList.remove('open');
             guide.hidden = true;
             recall.hidden = false;
+            stopPointing();
         }
+
+        // --- Pointing ---------------------------------------------------------
+        // Each explanation names the thing it is about, and the bot aims its
+        // arm at that element and outlines it, so "this" is unambiguous.
+        const TARGETS = {
+            home: '.hero-buttons',
+            about: '.about-stats',
+            experience: '.timeline',
+            projects: '.project-filters',
+            skills: '.skills-grid',
+            education: '.languages-section',
+            contact: '.contact-info'
+        };
+
+        const botSvg = $('svg', bot);
+        const armRight = $('.bot-arm-right', bot);
+        const armLeft = $('.bot-arm-left', bot);
+        let pointTarget = null;
+
+        // Shoulder hinges, in viewBox units of the 96x104 drawing.
+        const SHOULDER = { right: [84, 78], left: [36, 78] };
+        // Mirrored, because the left arm is drawn aiming -x.
+        const REST = { right: 38, left: -38 };
+
+        function restArms() {
+            if (armRight) {
+                armRight.classList.remove('aiming');
+                armRight.style.transform = 'rotate(' + REST.right + 'deg)';
+            }
+            if (armLeft) {
+                armLeft.classList.remove('aiming');
+                armLeft.style.transform = 'rotate(' + REST.left + 'deg)';
+            }
+        }
+
+        function aimArm() {
+            if (!armRight || !armLeft) return;
+            if (!pointTarget || !guide.classList.contains('open')) { restArms(); return; }
+
+            const b = bot.getBoundingClientRect();
+            const t = pointTarget.getBoundingClientRect();
+            const tx = t.left + t.width / 2;
+            const ty = t.top + t.height / 2;
+
+            // Pick the arm on the side the target is on, so it reaches out
+            // rather than swinging across the body.
+            const useRight = tx >= b.left + b.width / 2;
+            const arm = useRight ? armRight : armLeft;
+            const other = useRight ? armLeft : armRight;
+            const hinge = useRight ? SHOULDER.right : SHOULDER.left;
+
+            const vb = botSvg && botSvg.viewBox && botSvg.viewBox.baseVal;
+            const vw = (vb && vb.width) || 120;
+            const vh = (vb && vb.height) || 124;
+            const sx = b.left + (hinge[0] / vw) * b.width;
+            const sy = b.top + (hinge[1] / vh) * b.height;
+            const dx = tx - sx;
+            const dy = ty - sy;
+
+            // The right arm is drawn aiming +x, the left one aiming -x.
+            const deg = useRight
+                ? Math.atan2(dy, dx) * 180 / Math.PI
+                : Math.atan2(-dy, -dx) * 180 / Math.PI;
+
+            other.classList.remove('aiming');
+            other.style.transform = 'rotate(' + (useRight ? REST.left : REST.right) + 'deg)';
+            arm.classList.add('aiming');
+            arm.style.transform = 'rotate(' + deg.toFixed(1) + 'deg)';
+        }
+
+        function pointAt(key) {
+            document.querySelectorAll('.guide-pointing')
+                .forEach((el) => el.classList.remove('guide-pointing'));
+
+            const sel = TARGETS[key];
+            const section = document.getElementById(key);
+            pointTarget = sel && section ? section.querySelector(sel) : null;
+            if (!pointTarget && section) pointTarget = section.querySelector('.section-title');
+            if (pointTarget) pointTarget.classList.add('guide-pointing');
+            aimArm();
+        }
+
+        function stopPointing() {
+            pointTarget = null;
+            document.querySelectorAll('.guide-pointing')
+                .forEach((el) => el.classList.remove('guide-pointing'));
+            aimArm();
+        }
+
+        // Keep the finger on the target as the page moves under it.
+        scrollFrameHooks.push(aimArm);
 
         // --- Portal travel ---------------------------------------------------
         // Each section has a landing spot. The right-hand ones sit mid-height
@@ -1341,27 +1435,40 @@
         let porting = false;
         let pendingKey = null;
 
-        const travelAllowed = () => !reduceMotion && window.innerWidth > 768;
+        const travelAllowed = () => !reduceMotion && window.innerWidth > 900;
 
         function applyAnchor(key) {
             const a = ANCHORS[key];
-            if (!a || window.innerWidth <= 768) return;
+            if (!a || window.innerWidth <= 900) return;
             anchorKey = key;
 
             guide.classList.toggle('at-right', a.x === 'right');
 
-            // Measure after the side swap so the bubble is on the correct side.
-            const box = guide.getBoundingClientRect();
-            const left = a.x === 'left'
-                ? MARGIN
-                : Math.max(MARGIN, window.innerWidth - box.width - MARGIN);
-            const top = a.y === 'bottom'
-                ? window.innerHeight - box.height - MARGIN
-                : Math.max(MARGIN, (window.innerHeight - box.height) / 2);
+            // Stand in the page gutter, outside the content column, so the bot
+            // is never on top of text. The bubble is measured separately
+            // because it keeps its layout box even while folded away.
+            const column = document.querySelector('.projects .container') || document.querySelector('.container');
+            const col = column ? column.getBoundingClientRect() : { left: 120, right: window.innerWidth - 120 };
+            const botW = bot.getBoundingClientRect().width || 78;
+            const botH = bot.getBoundingClientRect().height || 85;
 
-            guide.style.setProperty('--gl', left + 'px');
-            guide.style.setProperty('--gt', top + 'px');
-            guide.style.setProperty('--gb', 'auto');
+            if (a.x === 'left') {
+                guide.style.setProperty('--gl', Math.max(12, col.left - botW - 14) + 'px');
+                guide.style.setProperty('--gr', 'auto');
+            } else {
+                guide.style.setProperty('--gl', 'auto');
+                guide.style.setProperty('--gr',
+                    Math.max(12, window.innerWidth - col.right - botW - 14) + 'px');
+            }
+
+            // Anchor by the bot, which sits at the bottom of the stack, so the
+            // bubble can grow upward without shifting the bot.
+            guide.style.setProperty('--gb', a.y === 'bottom'
+                ? MARGIN + 'px'
+                : Math.round(window.innerHeight / 2 - botH / 2) + 'px');
+
+            // The shoulder just moved, so the aim is stale.
+            requestAnimationFrame(aimArm);
         }
 
         function teleportTo(key) {
@@ -1384,6 +1491,7 @@
                 setTimeout(() => {
                     guide.classList.remove('arriving');
                     porting = false;
+                    aimArm();
                     if (pendingKey && pendingKey !== anchorKey) {
                         const next = pendingKey;
                         pendingKey = null;
@@ -1399,7 +1507,6 @@
 
         // --- Pointer tracking: pupils and a slight lean ---------------------
         const pupils = $$('.bot-pupil', bot);
-        const botSvg = $('svg', bot);
         if (!coarsePointer && !reduceMotion) {
             let queued = false;
             let px = 0;
@@ -1483,6 +1590,7 @@
         function stopTour() {
             touring = false;
             tourBtn.textContent = 'Take the tour';
+            scheduleCollapse();
             document.querySelectorAll('.guide-spotlight')
                 .forEach((el) => el.classList.remove('guide-spotlight'));
         }
@@ -1494,9 +1602,10 @@
             guide.classList.toggle('open');
             if (guide.classList.contains('open')) {
                 if (!currentKey) show('home');
-                else scheduleCollapse();
+                else { pointAt(currentKey); scheduleCollapse(); }
             } else {
                 clearTimeout(collapseTimer);
+                stopPointing();
             }
         });
 
