@@ -84,7 +84,9 @@ npx serve .
 | Experience entries | `.timeline`; two columns above 900px, stacked below |
 | Projects | `.projects-grid`; cards carry `data-filter` (live/private/research) and `data-cursor` for the cursor label |
 | Skills and levels | `.skills-grid`; the meter reads the `expert` / `advanced` / `working` class |
-| What the guide says | `SCRIPT` and `TARGETS` in section 17 of `script.js` |
+| What the guide says | `SCRIPT` in section 17 of `script.js` |
+| What the guide points at | `TARGETS`, one CSS selector per section |
+| What the guide can do | `ACTIONS`, a label plus a `run()` per section |
 | Resume PDF | replace `assets/Omar-Mohamed-Fawzy-Resume.pdf` |
 | Colors, type, spacing | the `:root` tokens at the top of `styles.css` |
 | Contact form endpoint | the `action` on `#contactForm` (currently Formspree) |
@@ -98,7 +100,7 @@ sizes rather than dropping in a full-resolution file.
 ## Accessibility
 
 Skip link, visible focus rings, labelled controls, a keyboard-operable start screen
-with a skip control, pinch-zoom enabled, and full `prefers-reduced-motion` support:
+with a skip control, `?` to summon the guide from anywhere, pinch-zoom enabled, and full `prefers-reduced-motion` support:
 the intro is skipped, the cursor and portals are dropped, and the guide keeps talking
 because the explanations are content. Every text colour clears WCAG AA against its
 own background.

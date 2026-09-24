@@ -581,16 +581,17 @@ main>section+section {
 
 .timeline {
     position: relative;
-    padding-left: var(--s-7);
+    padding-left: var(--s-8);
 }
 
 .timeline::before {
     content: '';
     position: absolute;
-    left: 7px;
-    top: 6px;
-    bottom: 6px;
-    width: 1px;
+    left: 9px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    border-radius: 2px;
     background: var(--line);
 }
 
@@ -598,12 +599,14 @@ main>section+section {
 .timeline::after {
     content: '';
     position: absolute;
-    left: 7px;
-    top: 6px;
-    width: 1px;
+    left: 9px;
+    top: 10px;
+    width: 2px;
+    border-radius: 2px;
     height: var(--timeline-progress, 0%);
-    max-height: calc(100% - 12px);
+    max-height: calc(100% - 20px);
     background: linear-gradient(180deg, var(--violet), var(--phosphor));
+    box-shadow: 0 0 12px rgba(92, 242, 196, 0.5);
     transition: height 0.1s linear;
 }
 
@@ -612,28 +615,27 @@ main>section+section {
 }
 
 .timeline-item+.timeline-item {
-    margin-top: var(--s-8);
+    margin-top: var(--s-5);
 }
 
-.timeline-marker {
-    position: absolute;
-    left: calc(var(--s-7) * -1);
-    top: 8px;
-    width: 15px;
-    height: 15px;
-    border: 2px solid var(--line);
-    border-radius: 50%;
-    background: var(--ink-900);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+/* Each role is a panel again: six entries need containers or they read as one
+   wall of text. The two-column split stays, because who-and-when and what are
+   different kinds of information. */
+.timeline-content {
+    padding: var(--s-6);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--ink-700);
+    box-shadow: var(--shadow-card);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s var(--ease-out);
 }
 
-.timeline-item.current .timeline-marker {
-    border-color: var(--phosphor);
-    box-shadow: 0 0 0 4px var(--phosphor-dim);
+.timeline-item:hover .timeline-content {
+    transform: translateY(-3px);
+    border-color: var(--line-soft);
+    box-shadow: var(--shadow-lift);
 }
 
-/* Wide enough to hold the record open: who and when on the left, what on the
-   right. Below this the entry stacks. */
 @media (min-width: 900px) {
 
     /* The grid goes on the content wrapper, not the item: the marker is
@@ -641,7 +643,7 @@ main>section+section {
     .timeline-content {
         display: grid;
         grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
-        column-gap: var(--s-8);
+        column-gap: var(--s-7);
         align-items: start;
     }
 
@@ -652,6 +654,45 @@ main>section+section {
     .timeline-description h4:first-child {
         margin-top: 0;
     }
+}
+
+/* A milestone, lit once you reach it. */
+.timeline-marker {
+    position: absolute;
+    left: calc(var(--s-8) * -1);
+    top: 26px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--ink-800);
+    border: 2px solid var(--line);
+    transition: border-color 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.timeline-marker::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--line);
+    transition: background-color 0.4s ease;
+}
+
+.timeline-item.revealed .timeline-marker {
+    border-color: var(--violet);
+}
+
+.timeline-item.revealed .timeline-marker::after {
+    background: var(--violet);
+}
+
+.timeline-item.current .timeline-marker {
+    border-color: var(--phosphor);
+    box-shadow: 0 0 0 5px var(--phosphor-dim), 0 0 18px rgba(92, 242, 196, 0.45);
+}
+
+.timeline-item.current .timeline-marker::after {
+    background: var(--phosphor);
 }
 
 .timeline-header h3 {
@@ -675,12 +716,12 @@ main>section+section {
 }
 
 .timeline-description {
-    margin-top: var(--s-4);
+    margin-top: var(--s-5);
 }
 
 .timeline-description h4 {
     margin: var(--s-5) 0 var(--s-3);
-    color: var(--text-low);
+    color: var(--phosphor);
     font-family: var(--font-body);
     font-size: var(--step--1);
     font-weight: 600;
@@ -705,7 +746,7 @@ main>section+section {
     position: absolute;
     left: 0;
     top: 0.65em;
-    width: 6px;
+    width: 7px;
     height: 1px;
     background: var(--violet);
 }
@@ -1849,7 +1890,7 @@ main>section+section {
 }
 
 .bot-eyes {
-    transform-origin: 60px 40px;
+    transform-origin: 60px 53px;
     animation: bot-blink 6s infinite;
 }
 
@@ -1871,7 +1912,7 @@ main>section+section {
 }
 
 .bot-core {
-    transform-origin: 60px 92px;
+    transform-origin: 60px 80px;
     animation: lamp 2.8s ease-in-out infinite;
 }
 
@@ -1888,12 +1929,12 @@ main>section+section {
 }
 
 .bot-arm-right {
-    transform-origin: 84px 78px;
+    transform-origin: 94px 64px;
     transform: rotate(38deg);
 }
 
 .bot-arm-left {
-    transform-origin: 36px 78px;
+    transform-origin: 26px 64px;
     transform: rotate(-38deg);
 }
 
@@ -2490,4 +2531,42 @@ main>section+section {
     .magnetic {
         transform: none !important;
     }
+}
+
+/* --- Guide: the action it can actually perform ---------------------------- */
+
+.guide-btn-do {
+    border-color: var(--phosphor);
+    color: var(--phosphor);
+}
+
+.guide-btn-do:hover {
+    background: var(--phosphor-dim);
+    border-color: var(--phosphor);
+    color: var(--phosphor);
+}
+
+.guide-btn-do[hidden] {
+    display: none;
+}
+
+.guide-progress {
+    margin-left: auto;
+    color: var(--text-low);
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.guide-actions {
+    align-items: center;
+}
+
+/* The eyes narrow while it is speaking and widen when it points. */
+.guide.talking .bot-pupil {
+    height: 6px;
+    y: 50;
+}
+
+.bot-pupil {
+    transition: transform 0.12s linear, height 0.25s ease, y 0.25s ease;
 }

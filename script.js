@@ -1229,7 +1229,7 @@
         if (!guide || !bot || !textEl) return;
 
         const SCRIPT = {
-            home: 'Hi, I am <b>Pixel</b>. I will explain what you are looking at as you scroll. This is the hero: Omar’s current role, and the resume download.',
+            home: 'Hi, I am <b>Pixel</b>. I explain each section as you scroll, and I can do the obvious next step for you. Press <b>?</b> any time to call me back.',
             about: '<b>About.</b> The short version of who Omar is, and the numbers behind it: 3,800+ applications audited, 1,300+ stages reconstructed, 1,500+ sessions delivered.',
             experience: '<b>Experience.</b> A timeline of every role. The rail fills as you scroll and the glowing marker follows whichever entry you are reading.',
             projects: '<b>Selected Work.</b> Twelve products Omar owned end to end. Use the filters for live demos, private internal platforms, or research, and hover a card to tilt it.',
@@ -1237,6 +1237,53 @@
             education: '<b>Education.</b> The Computer Science degree, certifications including Cambridge C2, and languages.',
             contact: '<b>Contact.</b> Email and phone both have copy buttons, and the form sends without navigating you off the page.'
         };
+
+        // What the guide can DO in each section. Narration alone is a tour
+        // guide; an assistant performs the obvious next step for you.
+        const ACTIONS = {
+            home: {
+                label: 'Get the resume',
+                run: () => { const a = $('a[href$=".pdf"]'); if (a) a.click(); }
+            },
+            about: {
+                label: 'Skip to the work',
+                run: () => jumpTo('projects')
+            },
+            experience: {
+                label: 'Current role',
+                run: () => {
+                    const first = $('.timeline-item');
+                    if (first) first.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+                }
+            },
+            projects: {
+                label: 'Only live demos',
+                run: () => { const b = $('.filter-btn[data-filter="live"]'); if (b) b.click(); }
+            },
+            skills: {
+                label: 'See them applied',
+                run: () => jumpTo('projects')
+            },
+            education: {
+                label: 'Copy email',
+                run: () => { const b = $('.copy-btn'); if (b) b.click(); }
+            },
+            contact: {
+                label: 'Copy email',
+                run: () => { const b = $('.copy-btn'); if (b) b.click(); }
+            }
+        };
+
+        function jumpTo(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        }
+
+        const doBtn = $('#guideDo');
+        const progressEl = $('#guideProgress');
+        const seenSections = new Set();
+
+        const ORDER = ['home', 'about', 'experience', 'projects', 'skills', 'education', 'contact'];
 
         const STORAGE_KEY = 'omf-guide-dismissed';
         let dismissed = false;
@@ -1274,6 +1321,7 @@
         // The bubble folds away on its own so it never sits on top of a card
         // for longer than it takes to read. Clicking the bot brings it back.
         let collapseTimer = null;
+        let talkTimer = null;
 
         function scheduleCollapse() {
             clearTimeout(collapseTimer);
@@ -1290,7 +1338,28 @@
             currentKey = key;
             guide.classList.add('open');
 
-            const speak = () => { setText(SCRIPT[key]); pointAt(key); scheduleCollapse(); };
+            const speak = () => {
+                setText(SCRIPT[key]);
+                pointAt(key);
+
+                const action = ACTIONS[key];
+                if (doBtn) {
+                    doBtn.hidden = !action;
+                    if (action) {
+                        doBtn.textContent = action.label;
+                        doBtn.onclick = () => { action.run(); scheduleCollapse(); };
+                    }
+                }
+
+                seenSections.add(key);
+                if (progressEl) progressEl.textContent = seenSections.size + ' / ' + ORDER.length;
+
+                guide.classList.add('talking');
+                clearTimeout(talkTimer);
+                talkTimer = setTimeout(() => guide.classList.remove('talking'), 1400);
+
+                scheduleCollapse();
+            };
 
             if (travelAllowed() && ANCHORS[key] && key !== anchorKey) {
                 // Speak once the bot has stepped out of the far portal.
@@ -1340,7 +1409,7 @@
         let pointTarget = null;
 
         // Shoulder hinges, in viewBox units of the 96x104 drawing.
-        const SHOULDER = { right: [84, 78], left: [36, 78] };
+        const SHOULDER = { right: [94, 64], left: [26, 64] };
         // Mirrored, because the left arm is drawn aiming -x.
         const REST = { right: 38, left: -38 };
 
@@ -1554,7 +1623,6 @@
         sections.forEach((s) => guideObserver.observe(s));
 
         // --- The tour --------------------------------------------------------
-        const ORDER = ['home', 'about', 'experience', 'projects', 'skills', 'education', 'contact'];
 
         function runTour() {
             if (touring) { stopTour(); return; }
@@ -1610,6 +1678,19 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && touring) stopTour();
+
+            // "?" summons the guide from anywhere, unless you are typing.
+            const typing = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName || '');
+            if (e.key === '?' && !typing) {
+                e.preventDefault();
+                if (dismissed) { open(); return; }
+                guide.classList.toggle('open');
+                if (guide.classList.contains('open')) {
+                    if (!currentKey) show('home'); else { pointAt(currentKey); scheduleCollapse(); }
+                } else {
+                    stopPointing();
+                }
+            }
         });
 
         // Appear once the visitor is actually in the page.
